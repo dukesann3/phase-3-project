@@ -7,12 +7,12 @@ class Task:
 
     all = []
 
-    def __init__(self, date, time, duration, schedule, description=""):
+    def __init__(self, date, time, duration, description, schedule_id):
         self.date = date
         self.time = time
         self.duration = duration
-        self.schedule = schedule
         self.description = description
+        self.schedule_id = schedule_id
 
     def __repr__(self):
         return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}"
@@ -68,16 +68,40 @@ class Task:
             raise TypeError("Description must be a string")
     
     @property
-    def schedule(self):
-        return self._schedule
+    def schedule_id(self):
+        return self._schedule_id
     
-    @schedule.setter
-    def schedule(self, schedule):
-        if isinstance(schedule, Schedule):
-            self._schedule = schedule
+    @schedule_id.setter
+    def schedule_id(self, schedule_id):
+        if isinstance(schedule_id, int):
+            self._schedule_id = schedule_id
         else:
             raise TypeError("Schedule must be a Schedule object")
         
-
+    @classmethod
+    def create_table(cls):
+        """Creates new table here"""
+        sql = """
+            CREATE TABLE IF NOT EXISTS Task(
+                id PRIMARY KEY,
+                date TEXT,
+                time TEXT,
+                duration INTEGER,
+                description TEXT,
+                schedule_id INTEGER,
+                FOREIGN KEY (schedule_id) REFERENCES Schedule(id)
+            )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    @classmethod
+    def drop_table(cls):
+        """Drops table here"""
+        sql = """
+            DROP TABLE IF EXISTS Task
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
 
 
