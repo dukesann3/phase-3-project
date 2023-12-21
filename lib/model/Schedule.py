@@ -1,3 +1,6 @@
+#lib/model/Schedule.py
+from model.Task import Task
+from model.__init__ import CURSOR, CONN
 
 class Schedule:
 
@@ -15,6 +18,6 @@ class Schedule:
         else:
             raise TypeError("Name must be a string and not empty")
     
-    
-
+    def tasks(self):
+        return [task for task in Task.all if task.schedule == self]
         

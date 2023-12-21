@@ -1,6 +1,7 @@
 # lib/model/Task.py
 import re
-import Schedule
+from model.Schedule import Schedule
+from model.__init__ import CURSOR, CONN
 
 class Task:
 
