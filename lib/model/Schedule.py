@@ -18,6 +18,25 @@ class Schedule:
         else:
             raise TypeError("Name must be a string and not empty")
     
-    def tasks(self):
-        return [task for task in Task.all if task.schedule == self]
+    @classmethod
+    def create_table(cls):
+        """Creates a new table here"""
+        sql = """
+            CREATE TABLE IF NOT EXISTS Schedule(
+                id INTEGER PRIMARY KEY,
+                name TEXT
+            )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+        
+    @classmethod
+    def drop_table(cls):
+        """Deletes table here"""
+        sql = """
+            DROP TABLE IF EXISTS Schedule
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
         
