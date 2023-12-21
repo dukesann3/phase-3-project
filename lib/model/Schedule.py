@@ -39,4 +39,20 @@ class Schedule:
         CURSOR.execute(sql)
         CONN.commit()
 
-        
+    def save(self):
+        """Creates new row for Schedule table"""
+        sql = """
+            INSERT INTO Schedule (name)
+            VALUES (?)
+        """
+        CURSOR.execute(sql, (self.name,))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
+    @classmethod
+    def create(cls, name):
+        new_schedule = cls(name)
+        new_schedule.save()
+        return new_schedule

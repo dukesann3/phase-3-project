@@ -5,7 +5,7 @@ from model.__init__ import CURSOR, CONN
 
 class Task:
 
-    all = []
+    all = {}
 
     def __init__(self, date, time, duration, description, schedule_id):
         self.date = date
@@ -103,5 +103,33 @@ class Task:
         """
         CURSOR.execute(sql)
         CONN.commit()
+
+    # It is self instead of class because this is each row is specific to each instance
+    def save(self):
+        """add new rows into Task table"""
+        sql = """
+            INSERT INTO Task (date, time, duration, description, schedule_id)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.date, self.time, self.duration, self.description, self.schedule_id))
+        CONN.commit()
+
+        #the last row's id is extracted from here
+        self.id = CURSOR.lastrowid
+        #last row id is now being used to index all={} and the key is the object instance itself.
+        type(self).all[self.id] = self
+        #This is a very good way of linking the id of the database instance with the object instance of the class
+
+    @classmethod
+    def create(cls, date, time, duration, description, schedule_id):
+        new_task = cls(date, time, duration, description, schedule_id)
+        new_task.save()
+        return new_task
+    
+
+
+
+
+
 
 
