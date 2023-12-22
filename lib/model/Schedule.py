@@ -1,8 +1,9 @@
 #lib/model/Schedule.py
-from model.Task import Task
 from model.__init__ import CURSOR, CONN
 
 class Schedule:
+
+    all = {}
 
     def __init__(self, name):
         self.name = name
