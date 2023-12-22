@@ -181,8 +181,26 @@ class Task:
         """
         retrieved_task = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(retrieved_task) if retrieved_task else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT * FROM Task
+            WHERE name = ?
+        """
+        retrieved_task = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(retrieved_task) if retrieved_task else None
 
-
+    @classmethod
+    def find_by_date(cls, date):
+        sql = """
+            SELECT * FROM Task
+            WHERE date = ?
+        """
+        retrieved_tasks = CURSOR.execute(sql, (date,)).fetchall()
+        return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
+    
+    
 
 
 
