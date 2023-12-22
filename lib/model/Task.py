@@ -165,8 +165,13 @@ class Task:
         #because it will search for any values that do not match with python class and updates it on the spot.
         #the caveat is that the instance_from_db must be used every time the CLI is being called to SHOW the results 
 
-    
-
+    def delte(self):
+        sql = """
+            DELETE FROM Task
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
 
 
 
