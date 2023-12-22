@@ -57,3 +57,23 @@ class Schedule:
         new_schedule = cls(name)
         new_schedule.save()
         return new_schedule
+    
+    @classmethod
+    def instance_from_db(cls, rows):
+        #rows is recieved from the database
+        #code below grabs the specific schedule that is saved within the all dict by calling its self.id = rows[0]
+        schedule = cls.all.get(rows[0])
+        if schedule:
+            #if this instance exists, then let's make sure that the name of it is consistent with the db value
+            schedule.name = rows[1]
+        else:
+            #if this instance does not exist, 
+            schedule = cls(rows[1])
+            schedule.id = rows[0]
+            #need to add this to the all dictionary. Very important
+            cls.all[schedule.id] = schedule
+        return schedule
+        
+
+
+

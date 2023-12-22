@@ -126,6 +126,21 @@ class Task:
         new_task.save()
         return new_task
     
+    @classmethod
+    def instance_from_db(cls, rows):
+        task = cls.all[rows[0]]
+        if task:
+            task.date = rows[1]
+            task.time = rows[2]
+            task.duration = rows[3]
+            task.description = rows[4]
+            task.schedule_id = rows[5]
+        else:
+            task = cls(rows[1], rows[2], rows[3], rows[4], rows[5])
+            task.id = rows[0]
+            cls.all[task.id] = task
+        return task
+    
 
 
 
