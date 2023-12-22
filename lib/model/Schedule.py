@@ -104,5 +104,13 @@ class Schedule:
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
+    def find_by_id(cls, id):
+        sql = """
+            SELECT * FROM Schedule
+            WHERE id = ?
+        """
+        retrieved_schedule = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+
 
 
