@@ -90,7 +90,7 @@ class Task:
                 description TEXT,
                 schedule_id INTEGER,
                 FOREIGN KEY (schedule_id) REFERENCES Schedule(id)
-            )
+            );
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -99,7 +99,7 @@ class Task:
     def drop_table(cls):
         """Drops table here"""
         sql = """
-            DROP TABLE IF EXISTS Task
+            DROP TABLE IF EXISTS Task;
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -109,7 +109,7 @@ class Task:
         """add new rows into Task table"""
         sql = """
             INSERT INTO Task (date, time, duration, description, schedule_id)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?);
         """
         CURSOR.execute(sql, (self.date, self.time, self.duration, self.description, self.schedule_id))
         CONN.commit()
@@ -127,31 +127,30 @@ class Task:
         return new_task
     
     @classmethod
-    def instance_from_db(cls, rows):
+    def instance_from_db(cls, row):
         #This is a method that ensures everything is consistent between Python and DB
-        task = cls.all[rows[0]]
+        task = cls.all.get(row[0])
         if task:
-            task.date = rows[1]
-            task.time = rows[2]
-            task.duration = rows[3]
-            task.description = rows[4]
-            task.schedule_id = rows[5]
+            task._date = row[1]
+            task._time = row[2]
+            task._duration = row[3]
+            task._description = row[4]
+            task._schedule_id = row[5]
         else:
-            task = cls(rows[1], rows[2], rows[3], rows[4], rows[5])
-            task.id = rows[0]
+            task = cls(row[1], row[2], row[3], row[4], row[5])
+            task.id = row[0]
             cls.all[task.id] = task
         return task
     
     @classmethod
     def get_all(cls):
         sql = """
-            SELECT * FROM Task
+            SELECT * FROM Task;
         """
 
         all_tasks = CURSOR.execute(sql).fetchall()
-        CONN.commit()
 
-        return [cls.instance_from_db(task) for task in all_tasks if all_tasks]
+        return [cls.instance_from_db(task) for task in all_tasks]
 
 
 

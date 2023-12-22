@@ -8,6 +8,8 @@ class Schedule:
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return f"Schedule Name: {self.name}"
     @property
     def name(self):
         return self._name
@@ -26,7 +28,7 @@ class Schedule:
             CREATE TABLE IF NOT EXISTS Schedule(
                 id INTEGER PRIMARY KEY,
                 name TEXT
-            )
+            );
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -35,7 +37,7 @@ class Schedule:
     def drop_table(cls):
         """Deletes table here"""
         sql = """
-            DROP TABLE IF EXISTS Schedule
+            DROP TABLE IF EXISTS Schedule;
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -44,7 +46,7 @@ class Schedule:
         """Creates new row for Schedule table"""
         sql = """
             INSERT INTO Schedule (name)
-            VALUES (?)
+            VALUES (?);
         """
         CURSOR.execute(sql, (self.name,))
         CONN.commit()
@@ -78,12 +80,12 @@ class Schedule:
     @classmethod
     def get_all(cls):
         sql = """
-            SELECT * FROM Schedule
+            SELECT * FROM Schedule;
         """
         all_schedules = CURSOR.execute(sql).fetchall()
-        CONN.commit()
+
         #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
-        return [cls.instance_from_db(schedule) for schedule in all_schedules if all_schedules]
+        return [cls.instance_from_db(schedule) for schedule in all_schedules]
         
 
 
