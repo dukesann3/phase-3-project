@@ -111,6 +111,14 @@ class Schedule:
         """
         retrieved_schedule = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+    
+    def find_by_name(cls, name):
+        sql = """
+            SELECT * FROM Schedule
+            WHERE name = ?
+        """
+        retrieved_schedule = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
 
 
 
