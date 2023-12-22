@@ -87,6 +87,16 @@ class Schedule:
         #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
         return [cls.instance_from_db(schedule) for schedule in all_schedules]
         
+    def update(self):
+        sql = """
+            UPDATE Schedule 
+            SET name = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.id))
+        CONN.commit()
+
+    
 
 
 

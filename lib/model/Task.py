@@ -29,7 +29,7 @@ class Task:
         if isinstance(date, str) and bool(allowable_date_regex.fullmatch(date)):
             self._date = date
         else:
-            raise TypeError("Date must be a string and be in MM/DD/YY format")
+            raise TypeError("Date must be a string and be in MM/DD/YYYY format")
     
     @property
     def time(self):
@@ -151,6 +151,21 @@ class Task:
         all_tasks = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(task) for task in all_tasks]
+    
+    def update(self):
+        sql = """
+            UPDATE Task 
+            SET date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.date, self.time, self.duration, self.description, self.schedule_id, self.id))
+        CONN.commit()
+        #if I update thru here, I will update the database and not the python class
+        #that is where instance_from_db come in handy
+        #because it will search for any values that do not match with python class and updates it on the spot.
+        #the caveat is that the instance_from_db must be used every time the CLI is being called to SHOW the results 
+
+    
 
 
 
