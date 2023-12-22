@@ -104,6 +104,7 @@ class Schedule:
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
+    @classmethod
     def find_by_id(cls, id):
         sql = """
             SELECT * FROM Schedule
@@ -112,6 +113,7 @@ class Schedule:
         retrieved_schedule = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
     
+    @classmethod
     def find_by_name(cls, name):
         sql = """
             SELECT * FROM Schedule
