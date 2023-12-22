@@ -128,6 +128,7 @@ class Task:
     
     @classmethod
     def instance_from_db(cls, rows):
+        #This is a method that ensures everything is consistent between Python and DB
         task = cls.all[rows[0]]
         if task:
             task.date = rows[1]
@@ -141,6 +142,18 @@ class Task:
             cls.all[task.id] = task
         return task
     
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT * FROM Task
+        """
+
+        all_tasks = CURSOR.execute(sql).fetchall()
+        CONN.commit()
+
+        return [cls.instance_from_db(task) for task in all_tasks if all_tasks]
+
+
 
 
 

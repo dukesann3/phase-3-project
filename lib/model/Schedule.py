@@ -60,6 +60,7 @@ class Schedule:
     
     @classmethod
     def instance_from_db(cls, rows):
+        #This is a method that ensures everything is consistent between Python and DB
         #rows is recieved from the database
         #code below grabs the specific schedule that is saved within the all dict by calling its self.id = rows[0]
         schedule = cls.all.get(rows[0])
@@ -73,6 +74,16 @@ class Schedule:
             #need to add this to the all dictionary. Very important
             cls.all[schedule.id] = schedule
         return schedule
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT * FROM Schedule
+        """
+        all_schedules = CURSOR.execute(sql).fetchall()
+        CONN.commit()
+        #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
+        return [cls.instance_from_db(schedule) for schedule in all_schedules if all_schedules]
         
 
 
