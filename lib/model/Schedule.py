@@ -122,5 +122,13 @@ class Schedule:
         retrieved_schedule = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
 
-
+    @classmethod
+    def tasks(cls, schedule_id):
+        sql = """
+            SELECT * FROM Task
+            WHERE schedule_id = ?
+        """
+        retrieved_tasks = CURSOR.execute(sql, (schedule_id,)).fetchall()
+        return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
+    
 

@@ -200,14 +200,7 @@ class Task:
         retrieved_tasks = CURSOR.execute(sql, (date,)).fetchall()
         return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
-    @classmethod
-    def schedule(cls, schedule_id):
-        sql = """
-            SELECT * FROM Task
-            WHERE schedule_id = ?
-        """
-        retrieved_tasks = CURSOR.execute(sql, (schedule_id,)).fetchall()
-        return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
+
     
 
 
