@@ -1,6 +1,7 @@
 from helpers import (
     exit_program
 )
+#download getch or msvcrt when you have internet
 
 def main():
     while True:
@@ -10,7 +11,7 @@ def welcome_screen():
     print("WELCOME TO SCHEDULING CLI SOFTWARE")
     user_input = input("Press any key to continue ")
     if len(user_input) > 0:
-        pass
+        schedule_task_screen()
 
 def schedule_task_screen():
     print("Please choose the following:")
@@ -23,3 +24,6 @@ def schedule_task_screen():
     else:
         exit_program()
         #add new function here
+
+if __name__ == "__main__":
+    main()
