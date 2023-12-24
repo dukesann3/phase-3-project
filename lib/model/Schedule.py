@@ -1,5 +1,6 @@
 #lib/model/Schedule.py
 from model.__init__ import CURSOR, CONN
+from model.Task import Task
 
 class Schedule:
 
@@ -131,5 +132,11 @@ class Schedule:
         """
         retrieved_tasks = CURSOR.execute(sql, (self.id,)).fetchall()
         return [Task.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
+
+    def add_new_task(self, date, time, duration, description):
+        new_task = Task(date, time, duration, description, self.id)
+        new_task.save()
+        return new_task
+
     
 
