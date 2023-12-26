@@ -1,4 +1,5 @@
 import re
+import math
 
 last_date_of_month = {"01": 31, "02": 28, "03": 31, "04": 30, "05": 31, 
                     "06": 30, "07": 31, "08": 31, "09": 30, "10": 31, "11": 30, "12": 31}
@@ -64,6 +65,10 @@ def add_time(date, time, duration):
     day_ = date_["day"]
     year_ = date_["year"]
 
+    time_ = parse_time(time)
+    hour_ = time_["hour"]
+    minute_ = time_["minute"]
+
     key = True
     while key:
         if duration > (24 - time):
@@ -82,16 +87,30 @@ def add_time(date, time, duration):
     
     print(f"{month_}/{day_}/{year_} at {time}")
 
-def get_time(time):
+def parse_time(time):
     #time is in 09:00am or pm format
     time_pattern = r"\d+"
     time_regex = re.compile(time_pattern)
 
     time_list = re.findall(time_regex, time)
     #returns first index of hours and second index of minutes
-    return time_list
+    hour = time_list[0]
+    minute = time_list[1]
 
-print(get_time("09:00am"))
+    return {"hour": hour, "minute": minute}
+
+def convert_duration_to_minutes(duration):
+    #duration is in hours. What to do if it is in minutes?
+    whole_duration = math.floor(duration)
+    minutes_in_decimals = duration - whole_duration
+
+    minutes = math.floor(minutes_in_decimals * 60)
+    return minutes
+
+
+
+
+
 
 
 
