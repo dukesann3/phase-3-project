@@ -97,7 +97,7 @@ def parse_time(time):
     hour = time_list[0]
     minute = time_list[1]
 
-    return {"hour": hour, "minute": minute}
+    return {"hour": int(hour), "minute": int(minute)}
 
 def convert_duration_to_minutes(duration):
     #duration is in hours. What to do if it is in minutes?
@@ -105,7 +105,47 @@ def convert_duration_to_minutes(duration):
     minutes_in_decimals = duration - whole_duration
 
     minutes = math.floor(minutes_in_decimals * 60)
-    return minutes
+    return {"hour": whole_duration, "minute": minutes}
+
+def convert_time_to_twentyfour(time):
+    parsed_time = parse_time(time)
+    hour_ = parsed_time["hour"]
+    minute_ = parsed_time["minute"]
+
+    ampm = r"(am|pm)"
+    ampm_regex = re.compile(ampm)
+    ampm_list = re.findall(ampm_regex, time)
+    
+    if ampm_list[0] == 'pm' and not hour_ == 12:
+        hour_ = hour_ + 12
+    elif ampm_list[0] == 'am' and hour_ == 12:
+        hour_ = 0
+    elif ampm_list[0] == 'pm' and hour_ == 12:
+        hour_ = 12
+    
+    if len(str(minute_)) < 2:
+        minute_ = f"0{minute_}"
+    if len(str(hour_)) < 2:
+        hour_ = f"0{hour_}"
+
+    return f"{hour_}:{minute_}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
