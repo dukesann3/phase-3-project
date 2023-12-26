@@ -43,9 +43,55 @@ def add_day(date, days_to_add):
             day_ = day_ + days_to_add
             key = False
     
-    print(f"{month_}/{day_}/{year_}")
+    new_date = date_combiner(month_, day_, year_)
+    return new_date
 
-add_day("11/03/2000", 75)
+def date_combiner(month, day, year):
+    if month < 10:
+        month = f"0{month}"
+    if day < 10:
+        day = f"0{day}"
+
+    combined_date = f"{month}/{day}/{year}" 
+    return combined_date
+
+#come back to this
+def add_time(date, time, duration):
+    #time must be in 24 hours format
+    
+    date_ = parse_date(date)
+    month_ = date_["month"]
+    day_ = date_["day"]
+    year_ = date_["year"]
+
+    key = True
+    while key:
+        if duration > (24 - time):
+            duration = duration - (24 - 11)
+            day_ = day_ + 1
+            time = 0
+            if day_ > last_date_of_month[str(month_)]:
+                day_ = last_date_of_month[str(month_)]
+                combined_date = date_combiner(month_, day_, year_)
+                new_date = parse_date(add_day(combined_date, 1))
+                month_ = new_date["month"]
+                day_ = new_date["day"]
+                year_ = new_date["year"]
+        else:
+            time = duration
+    
+    print(f"{month_}/{day_}/{year_} at {time}")
+
+def get_time(time):
+    #time is in 09:00am or pm format
+    time_pattern = r"\d+"
+    time_regex = re.compile(time_pattern)
+
+    time_list = re.findall(time_regex, time)
+    #returns first index of hours and second index of minutes
+    return time_list
+
+print(get_time("09:00am"))
 
 
 
