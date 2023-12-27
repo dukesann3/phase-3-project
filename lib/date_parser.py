@@ -29,21 +29,21 @@ def add_day(date, days_to_add):
     day_ = date_["day"]
     year_ = date_["year"]
 
-    days_remaining_in_month = last_date_of_month[str(month_)] - day_
-    key = True
+    cumilative_days = day_ + days_to_add
+    stringified_month = f"0{month_}" if month_ < 10 else f"{month_}"
 
-    while key:
-        if days_to_add > days_remaining_in_month:
-            days_to_add = days_to_add - (last_date_of_month[str(month_)] - day_)
-            month_ = month_ + 1
-            day_ = 0
-            if month_ > 12:
-                month_ = 1
-                year_ = year_ + 1
-        else:
-            day_ = day_ + days_to_add
-            key = False
-    
+    while cumilative_days > last_date_of_month[stringified_month]:
+        days_remaining_in_month = last_date_of_month[stringified_month] - day_
+        days_to_add = days_to_add - days_remaining_in_month
+        day_ = 0
+        month_ = month_ + 1
+        cumilative_days = day_ + days_to_add
+        if month_ > 12:
+            month_ = 1
+            year_ = year_ + 1
+        stringified_month = f"0{month_}" if month_ < 10 else f"{month_}"
+
+    day_ = cumilative_days
     new_date = date_combiner(month_, day_, year_)
     return new_date
 
@@ -60,32 +60,27 @@ def date_combiner(month, day, year):
 def add_time(date, time, duration):
     #time must be in 24 hours format
     
-    date_ = parse_date(date)
-    month_ = date_["month"]
-    day_ = date_["day"]
-    year_ = date_["year"]
-
     time_ = parse_time(time)
     hour_ = time_["hour"]
     minute_ = time_["minute"]
 
-    key = True
-    while key:
-        if duration > (24 - time):
-            duration = duration - (24 - 11)
-            day_ = day_ + 1
-            time = 0
-            if day_ > last_date_of_month[str(month_)]:
-                day_ = last_date_of_month[str(month_)]
-                combined_date = date_combiner(month_, day_, year_)
-                new_date = parse_date(add_day(combined_date, 1))
-                month_ = new_date["month"]
-                day_ = new_date["day"]
-                year_ = new_date["year"]
-        else:
-            time = duration
+    time_to_add = convert_duration_to_hours_and_minutes(duration)
+    hours_to_add = time_to_add["hour"]
+    minutes_to_add = time_to_add["minute"]
+
+    hour_ = hour_ + hours_to_add
+    minute_ = minute_ + minutes_to_add
+
+    if minute_ >= 60:
+        minute_ = minute_ - 60
+        hour_ = hour_ + 1
+
+    while hour_ >= 24:
+        hour_ = hour_ - 24
+        date = add_day(date, 1)
     
-    print(f"{month_}/{day_}/{year_} at {time}")
+    print(f"{date}")
+    print(f"{hour_}:{minute_}")
 
 def parse_time(time):
     #time is in 09:00am or pm format
@@ -99,7 +94,7 @@ def parse_time(time):
 
     return {"hour": int(hour), "minute": int(minute)}
 
-def convert_duration_to_minutes(duration):
+def convert_duration_to_hours_and_minutes(duration):
     #duration is in hours. What to do if it is in minutes?
     whole_duration = math.floor(duration)
     minutes_in_decimals = duration - whole_duration
@@ -129,6 +124,8 @@ def convert_time_to_twentyfour(time):
         hour_ = f"0{hour_}"
 
     return f"{hour_}:{minute_}"
+
+add_time("12/30/2000", "09:34", 75.93)
 
 
 
