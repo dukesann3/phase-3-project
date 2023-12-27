@@ -58,8 +58,7 @@ def date_combiner(month, day, year):
 
 #come back to this
 def add_time(date, time, duration):
-    #time must be in 24 hours format
-    
+    time = convert_time_to_twentyfour(time)
     time_ = parse_time(time)
     hour_ = time_["hour"]
     minute_ = time_["minute"]
@@ -78,9 +77,9 @@ def add_time(date, time, duration):
     while hour_ >= 24:
         hour_ = hour_ - 24
         date = add_day(date, 1)
+
+    return {"date": date, "time": f"{hour_}:{minute_}"}
     
-    print(f"{date}")
-    print(f"{hour_}:{minute_}")
 
 def parse_time(time):
     #time is in 09:00am or pm format
@@ -125,7 +124,29 @@ def convert_time_to_twentyfour(time):
 
     return f"{hour_}:{minute_}"
 
-add_time("12/30/2000", "09:34", 75.93)
+def convert_time_to_ampm(time):
+    #assume original time value is in 24 hour format
+    parsed_time = parse_time(time)
+    hour_ = parsed_time["hour"]
+    minute_ = parsed_time["minute"]
+
+    ampm_time = ""
+
+    if hour_ == 24 or hour_ == 0:
+        ampm_time = f"12:{minute_}am"
+    elif 24 > hour_ >= 12:
+        hour_ = hour_ - 12
+        ampm_time = f"{hour_}:{minute_}pm"
+    elif 12 > hour_ > 0:
+        ampm_time = f"{hour_}:{minute_}am"
+    
+    return ampm_time
+
+
+
+
+print(convert_time_to_ampm("00:59"))
+print(add_time("12/30/2000", "09:34am", 75.93))
 
 
 
