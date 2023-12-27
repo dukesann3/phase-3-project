@@ -78,7 +78,8 @@ def add_time(date, time, duration):
         hour_ = hour_ - 24
         date = add_day(date, 1)
 
-    return {"date": date, "time": f"{hour_}:{minute_}"}
+    time_in_ampm = convert_time_to_ampm(f"{hour_}:{minute_}")
+    return {"date": date, "time": time_in_ampm}
     
 
 def parse_time(time):
@@ -136,17 +137,13 @@ def convert_time_to_ampm(time):
         ampm_time = f"12:{minute_}am"
     elif 24 > hour_ >= 12:
         hour_ = hour_ - 12
-        ampm_time = f"{hour_}:{minute_}pm"
+        ampm_time = f"{hour_}:{minute_}pm" if hour_ >= 10 else f"0{hour_}:{minute_}pm"
     elif 12 > hour_ > 0:
-        ampm_time = f"{hour_}:{minute_}am"
+        ampm_time = f"{hour_}:{minute_}am" if hour_ >= 10 else f"0{hour_}:{minute_}am"
     
     return ampm_time
 
 
-
-
-print(convert_time_to_ampm("00:59"))
-print(add_time("12/30/2000", "09:34am", 75.93))
 
 
 
