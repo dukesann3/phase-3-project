@@ -1,10 +1,34 @@
 # lib/model/Task.py
 import re
 from model.__init__ import CURSOR, CONN
+from date_parser import start_time_to_int, end_time_to_int
 
 class Task:
 
     all = {}
+
+    def __new__(cls, date, time, duration, description, schedule_id):
+        #need comparison function in here
+
+        new_obj = super().__new__(cls)
+
+        new_start_time = start_time_to_int(date, time)
+        new_end_time = end_time_to_int(date, time, duration)
+
+        for key in cls.all:
+            current_self = cls.all[key]
+            date_ = current_self.date
+            time_ = current_self.time
+            duration_ = current_self.duration
+
+            start_time = start_time_to_int(date_, time_)
+            end_time = end_time_to_int(date_, time_, duration_)
+
+            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time:
+                raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
+
+        return new_obj
+
 
     def __init__(self, date, time, duration, description, schedule_id):
         self.date = date
@@ -12,6 +36,9 @@ class Task:
         self.duration = duration
         self.description = description
         self.schedule_id = schedule_id
+
+        self.start_time = start_time_to_int(date, time)
+        self.end_time = end_time_to_int(date, time, duration)
 
     def __repr__(self):
         return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}"

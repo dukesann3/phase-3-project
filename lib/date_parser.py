@@ -144,12 +144,13 @@ def convert_time_to_ampm(time):
 def start_time_to_int(date, time):
     time_ = convert_time_to_twentyfour(time)
     time_ = parse_time(time_)
-    hour_ = str(time_["hour"]) if time_["hour"] > 10 else "0" + str(time_["hour"])
-    minute_ = str(time_["minute"]) if time_["minute"] > 10 else "0" + str(time_["minute"])
+
+    hour_ = str(time_["hour"]) if time_["hour"] >= 10 else "0" + str(time_["hour"])
+    minute_ = str(time_["minute"]) if time_["minute"] >= 10 else "0" + str(time_["minute"])
 
     date_ = parse_date(date)
-    month_ = str(date_["month"]) if date_["month"] > 10 else "0" + str(date_["month"])
-    day_ = str(date_["day"]) if date_["day"] > 10 else "0" + str(date_["day"])
+    month_ = str(date_["month"]) if date_["month"] >= 10 else "0" + str(date_["month"])
+    day_ = str(date_["day"]) if date_["day"] >= 10 else "0" + str(date_["day"])
     year_ = str(date_["year"])
 
     start_time = year_ + month_ + day_ + hour_ + minute_
@@ -162,20 +163,22 @@ def end_time_to_int(date, time, duration):
     date_ = new_time["date"]
     date_ = parse_date(date_)
 
-    month_ = str(date_["month"]) if date_["month"] > 10 else "0" + str(date_["month"])
-    day_ = str(date_["day"]) if date_["day"] > 10 else "0" + str(date_["day"])
+    month_ = str(date_["month"]) if date_["month"] >= 10 else "0" + str(date_["month"])
+    day_ = str(date_["day"]) if date_["day"] >= 10 else "0" + str(date_["day"])
     year_ = str(date_["year"])
 
     time_in_ampm = new_time["time"]
     time_in_twenty_four = convert_time_to_twentyfour(time_in_ampm)
     time_ = parse_time(time_in_twenty_four)
 
-    hour_ = str(time_["hour"]) if time_["hour"] > 10 else "0" + str(time_["hour"])
-    minute_ = str(time_["minute"]) if time_["minute"] > 10 else "0" + str(time_["minute"])
+    hour_ = str(time_["hour"]) if time_["hour"] >= 10 else "0" + str(time_["hour"])
+    minute_ = str(time_["minute"]) if time_["minute"] >= 10 else "0" + str(time_["minute"])
 
     end_time = year_ + month_ + day_ + hour_ + minute_
     end_time = int(end_time)
     return end_time
+
+
 
 
 
