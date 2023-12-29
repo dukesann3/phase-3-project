@@ -137,6 +137,8 @@ class Schedule:
         new_task = Task(date, time, duration, description, self.id)
         new_task.save()
         return new_task
+    
+    #need to create function that doesn't allow same name schedule to be created
 
     
 

@@ -36,9 +36,7 @@ class Task:
         self.duration = duration
         self.description = description
         self.schedule_id = schedule_id
-
-        self.start_time = start_time_to_int(date, time)
-        self.end_time = end_time_to_int(date, time, duration)
+        
 
     def __repr__(self):
         return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}"
