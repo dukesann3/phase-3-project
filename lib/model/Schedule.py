@@ -10,6 +10,7 @@ class Schedule:
         new_obj = super().__new__(cls)
 
         for key in cls.all:
+            print(cls.all[key].name)
             if cls.all[key].name == name:
                 raise ValueError("This name has already been used. Cannot have duplicate")
         
@@ -147,7 +148,9 @@ class Schedule:
         new_task.save()
         return new_task
     
-    #need to create function that doesn't allow same name schedule to be created
+
+
+
 
     
 

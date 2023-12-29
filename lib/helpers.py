@@ -28,6 +28,9 @@ def show_details_in_schedule(selected_schedule):
     #show pretty much everything that is in the schedule
     
     all_tasks = selected_schedule.tasks()
-    print(all_tasks)
+    for task in all_tasks:
+        print(task)
+
+        
 
 
