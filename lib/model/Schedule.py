@@ -9,8 +9,8 @@ class Schedule:
     def __new__(cls, name):
         new_obj = super().__new__(cls)
 
-        for schedule in cls.all:
-            if schedule.name == name:
+        for key in cls.all:
+            if cls.all[key].name == name:
                 raise ValueError("This name has already been used. Cannot have duplicate")
         
         return new_obj
@@ -20,6 +20,7 @@ class Schedule:
 
     def __repr__(self):
         return f"Schedule Name: {self.name} {self.id}"
+    
     @property
     def name(self):
         return self._name

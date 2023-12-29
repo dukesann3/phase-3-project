@@ -26,7 +26,7 @@ def select_schedule():
 
 def show_details_in_schedule(selected_schedule):
     #show pretty much everything that is in the schedule
-    print(selected_schedule.tasks())
+    
     all_tasks = selected_schedule.tasks()
     print(all_tasks)
 
