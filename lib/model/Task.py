@@ -107,7 +107,7 @@ class Task:
         """Creates new table here"""
         sql = """
             CREATE TABLE IF NOT EXISTS Task(
-                id PRIMARY KEY,
+                id INTEGER PRIMARY KEY,
                 date TEXT,
                 time TEXT,
                 duration INTEGER,
