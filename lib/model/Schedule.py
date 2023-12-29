@@ -10,7 +10,7 @@ class Schedule:
         self.name = name
 
     def __repr__(self):
-        return f"Schedule Name: {self.name}"
+        return f"Schedule Name: {self.name} {self.id}"
     @property
     def name(self):
         return self._name
@@ -123,7 +123,6 @@ class Schedule:
         retrieved_schedule = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
 
-    @classmethod
     def tasks(self):
         from model.Task import Task
         sql = """

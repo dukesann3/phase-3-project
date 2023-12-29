@@ -153,6 +153,7 @@ class Task:
     @classmethod
     def instance_from_db(cls, row):
         #This is a method that ensures everything is consistent between Python and DB
+        #Also want to make sure that schedule and tasks do not interfere in the calendar
         task = cls.all.get(row[0])
         if task:
             task._date = row[1]

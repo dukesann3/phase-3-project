@@ -1,7 +1,8 @@
 
 from helpers import (
     exit_program,
-    display_all_schedules
+    display_all_schedules,
+    select_schedule
 )
 #download getch or msvcrt when you have internet
 
@@ -43,6 +44,7 @@ def schedule_screen():
 
     if user_input == 1:
         display_all_schedules()
+        select_schedule()
     elif user_input == 2:
         exit_program()
     else:
