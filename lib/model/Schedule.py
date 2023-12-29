@@ -6,6 +6,15 @@ class Schedule:
 
     all = {}
 
+    def __new__(cls, name):
+        new_obj = super().__new__(cls)
+
+        for schedule in cls.all:
+            if schedule.name == name:
+                raise ValueError("This name has already been used. Cannot have duplicate")
+        
+        return new_obj
+
     def __init__(self, name):
         self.name = name
 
