@@ -3,6 +3,7 @@ import re
 from model.__init__ import CURSOR, CONN
 from date_parser import start_time_to_int, end_time_to_int
 
+
 class Task:
 
     all = {}
@@ -39,7 +40,7 @@ class Task:
         
 
     def __repr__(self):
-        return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}"
+        return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
 
     @property
     def date(self):

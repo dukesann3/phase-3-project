@@ -20,7 +20,7 @@ class Schedule:
         self.name = name
 
     def __repr__(self):
-        return f"Schedule Name: {self.name} {self.id}"
+        return f"Schedule Name: {self.name}"
     
     @property
     def name(self):
