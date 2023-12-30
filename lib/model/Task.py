@@ -4,6 +4,7 @@ from model.__init__ import CURSOR, CONN
 from date_parser import start_time_to_int, end_time_to_int
 
 
+
 class Task:
 
     all = {}
