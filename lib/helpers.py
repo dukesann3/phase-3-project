@@ -30,7 +30,32 @@ def show_details_in_schedule(selected_schedule):
     all_tasks = selected_schedule.tasks()
     for task in all_tasks:
         print(task)
+        #try to print task as a table
+    
+    #add code that asks if user wants to delete task, add task, or edit task.
+    #need task id for this
+    task_id = input("Choose the following tasks: ")
+    what_to_do_with_tasks()
+    pass
 
-        
+def what_to_do_with_tasks():
+    print("1. Add Task")
+    print("2. Delete Task")
+    print("3. Edit Task")
+
+    user_input = input("Please choose task action: ")
+
+    if user_input == 1:
+        pass
+    elif user_input == 2:
+        pass
+    elif user_input == 3:
+        pass
+    else:
+        exit_program()
+
+    exit_program()
+
+
 
 

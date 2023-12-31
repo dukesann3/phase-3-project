@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/dmorise/Development/code/phase-3-flatiron/phase-3-project-testing/phase-3-project"
+set -gx VIRTUAL_ENV "/home/dmorise/Development/code/phase-3-flatiron/phase-3-project-testing/phase-3-env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

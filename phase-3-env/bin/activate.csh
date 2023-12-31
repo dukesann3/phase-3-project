@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/home/dmorise/Development/code/phase-3-flatiron/phase-3-project-testing/phase-3-project"
+setenv VIRTUAL_ENV "/home/dmorise/Development/code/phase-3-flatiron/phase-3-project-testing/phase-3-env"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

@@ -1,15 +1,14 @@
 # lib/model/Task.py
+
 import re
 from model.__init__ import CURSOR, CONN
 from date_parser import start_time_to_int, end_time_to_int
-
-
 
 class Task:
 
     all = {}
 
-    def __new__(cls, date, time, duration, description, schedule_id):
+    def __new__(cls, name, date, time, duration, description, schedule_id):
         #need comparison function in here
 
         new_obj = super().__new__(cls)
@@ -22,17 +21,21 @@ class Task:
             date_ = current_self.date
             time_ = current_self.time
             duration_ = current_self.duration
+            name_ = current_self.name
 
             start_time = start_time_to_int(date_, time_)
             end_time = end_time_to_int(date_, time_, duration_)
 
             if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time:
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
-
+            if name_ == name:
+                raise ValueError("This name has been used already. Please choose a different name")
+            
         return new_obj
 
 
-    def __init__(self, date, time, duration, description, schedule_id):
+    def __init__(self, name, date, time, duration, description, schedule_id):
+        self.name = name
         self.date = date
         self.time = time
         self.duration = duration
@@ -41,7 +44,18 @@ class Task:
         
 
     def __repr__(self):
-        return f"Task Information: \nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
+        return f"Task Information: Name: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        if isinstance(name, str) and len(name) > 0:
+            self._name = name
+        else:
+            raise TypeError("Name must be a string longer than 0 characters")
 
     @property
     def date(self):
@@ -110,6 +124,7 @@ class Task:
         sql = """
             CREATE TABLE IF NOT EXISTS Task(
                 id INTEGER PRIMARY KEY,
+                name TEXT,
                 date TEXT,
                 time TEXT,
                 duration INTEGER,
@@ -134,10 +149,10 @@ class Task:
     def save(self):
         """add new rows into Task table"""
         sql = """
-            INSERT INTO Task (date, time, duration, description, schedule_id)
-            VALUES (?, ?, ?, ?, ?);
+            INSERT INTO Task (name, date, time, duration, description, schedule_id)
+            VALUES (?, ?, ?, ?, ?, ?);
         """
-        CURSOR.execute(sql, (self.date, self.time, self.duration, self.description, self.schedule_id))
+        CURSOR.execute(sql, (self.name, self.date, self.time, self.duration, self.description, self.schedule_id))
         CONN.commit()
 
         #the last row's id is extracted from here
@@ -147,8 +162,8 @@ class Task:
         #This is a very good way of linking the id of the database instance with the object instance of the class
 
     @classmethod
-    def create(cls, date, time, duration, description, schedule_id):
-        new_task = cls(date, time, duration, description, schedule_id)
+    def create(cls, name,date, time, duration, description, schedule_id):
+        new_task = cls(name, date, time, duration, description, schedule_id)
         new_task.save()
         return new_task
     
@@ -158,13 +173,14 @@ class Task:
         #Also want to make sure that schedule and tasks do not interfere in the calendar
         task = cls.all.get(row[0])
         if task:
-            task._date = row[1]
-            task._time = row[2]
-            task._duration = row[3]
-            task._description = row[4]
-            task._schedule_id = row[5]
+            task._name = row[1]
+            task._date = row[2]
+            task._time = row[3]
+            task._duration = row[4]
+            task._description = row[5]
+            task._schedule_id = row[6]
         else:
-            task = cls(row[1], row[2], row[3], row[4], row[5])
+            task = cls(row[1], row[2], row[3], row[4], row[5], row[6])
             task.id = row[0]
             cls.all[task.id] = task
         return task
@@ -182,10 +198,10 @@ class Task:
     def update(self):
         sql = """
             UPDATE Task 
-            SET date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
+            SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.date, self.time, self.duration, self.description, self.schedule_id, self.id))
+        CURSOR.execute(sql, (self.name, self.date, self.time, self.duration, self.description, self.schedule_id, self.id))
         CONN.commit()
         #if I update thru here, I will update the database and not the python class
         #that is where instance_from_db come in handy
