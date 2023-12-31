@@ -44,7 +44,7 @@ class Task:
         
 
     def __repr__(self):
-        return f"Task Information: Name: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
+        return f"Task Information: \nName: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
 
     @property
     def name(self):
@@ -162,7 +162,7 @@ class Task:
         #This is a very good way of linking the id of the database instance with the object instance of the class
 
     @classmethod
-    def create(cls, name,date, time, duration, description, schedule_id):
+    def create(cls, name, date, time, duration, description, schedule_id):
         new_task = cls(name, date, time, duration, description, schedule_id)
         new_task.save()
         return new_task
@@ -195,13 +195,13 @@ class Task:
 
         return [cls.instance_from_db(task) for task in all_tasks]
     
-    def update(self):
+    def update(self, name, date, time, duration, description):
         sql = """
             UPDATE Task 
             SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.date, self.time, self.duration, self.description, self.schedule_id, self.id))
+        CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
         CONN.commit()
         #if I update thru here, I will update the database and not the python class
         #that is where instance_from_db come in handy

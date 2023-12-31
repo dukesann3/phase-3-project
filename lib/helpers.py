@@ -1,5 +1,6 @@
 from model.Schedule import Schedule
 from model.Task import Task
+from test import (print_all_property_of_obj)
 
 def exit_program():
     print("Good bye!")
@@ -34,27 +35,92 @@ def show_details_in_schedule(selected_schedule):
     
     #add code that asks if user wants to delete task, add task, or edit task.
     #need task id for this
-    task_id = input("Choose the following tasks: ")
-    what_to_do_with_tasks()
-    pass
+    select_specific_task(all_tasks)
 
-def what_to_do_with_tasks():
-    print("1. Add Task")
-    print("2. Delete Task")
-    print("3. Edit Task")
+def select_specific_task(all_tasks):
+    task_name = input("Please enter task name to select task: ")
+    for task in all_tasks:
+        if task_name == task.name:
+            what_to_do_with_tasks(task)
+
+    print(f"Task name {task_name} has not been found")
+    select_specific_task(all_tasks)
+
+def what_to_do_with_tasks(task):
+    print("Choose the following: ")
+    print("1. Add New Task To Schedule")
+    print("2. Delete Task From Schedule")
+    print(f"3. Edit Selected Task: {task.name}")
+    print("Any other key to exit")
 
     user_input = input("Please choose task action: ")
 
-    if user_input == 1:
-        pass
-    elif user_input == 2:
-        pass
-    elif user_input == 3:
-        pass
+    if user_input == "1":
+        add_new_task_to_schedule(task)
+    elif user_input == "2":
+        remove_task_from_schedule(task)
+    elif user_input == "3":
+        update_task_from_schedule(task)
+    elif user_input == "test":
+        print_all_property_of_obj(task)
     else:
         exit_program()
 
     exit_program()
+
+def add_new_task_to_schedule(task):
+    #schedule id should come from task.schedule_id
+    task_name = input("Enter Task Name: ")
+    task_date = input("Enter Task Date: ")
+    task_time = input("Enter Task Start Time: ")
+    task_duration = input("Enter Task Duration: ")
+    task_description = input("Enter Task Description: ")
+
+    task_duration = float(task_duration)
+
+    new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, task.schedule_id)
+    print("Added New Task: ")
+    print(new_task)
+    what_to_do_with_tasks(task)
+
+def remove_task_from_schedule(task):
+    if task:
+        print("Successfully deleted Task: \n")
+        print(task)
+        task.delete()
+    else:
+        print("Task cannot be deleted")
+        what_to_do_with_tasks(task)
+    
+def update_task_from_schedule(task):
+    print("Update task: ")
+    print(task)
+    print("Press Enter to copy values from task" )
+
+    user_input_list = []
+    user_input = ""
+
+    for property, value in vars(task).items():
+        if property.startswith("_") and not property == "id" and not property == "_schedule_id":
+            clean_property = property[1:]
+            user_input = input(f"Enter Task {clean_property}: ")
+            if not user_input:
+                user_input_list.append(value)
+            else:
+                user_input_list.append(user_input)
+
+    task.update(user_input_list[0], user_input_list[1], user_input_list[2], user_input_list[3], user_input_list[4])
+    print("Task has been successfully updated: ")
+    print(task)
+
+
+
+
+    
+
+
+
+
 
 
 
