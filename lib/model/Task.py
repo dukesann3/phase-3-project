@@ -46,6 +46,34 @@ class Task:
     def __repr__(self):
         return f"Task Information: \nName: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
 
+    @classmethod
+    def start_end_time_comparator(cls, name, date, time, duration, id, schedule_id):
+        #need to exclude search of current id...
+        new_start_time = start_time_to_int(date, time)
+        new_end_time = end_time_to_int(date, time, duration)
+
+        for key in cls.all:
+            if cls.all[key].id == id and cls.all[key].schedule_id == schedule_id:
+                #ignores loop if loop is at current id.
+                continue
+            current_self = cls.all[key]
+            date_ = current_self.date
+            time_ = current_self.time
+            duration_ = current_self.duration
+            name_ = current_self.name
+
+            start_time = start_time_to_int(date_, time_)
+            end_time = end_time_to_int(date_, time_, duration_)
+
+            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time:
+                print("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
+                return False
+            if name_ == name:
+                print("This name has been used already. Please choose a different name")
+                return False
+            
+        return True
+
     @property
     def name(self):
         return self._name
@@ -201,8 +229,19 @@ class Task:
             SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
-        CONN.commit()
+
+        if type(self).start_end_time_comparator(name, date, time, duration, self.id, self.schedule_id):
+            CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
+            CONN.commit()
+            sql_fetch = """
+                SELECT * FROM Task
+                WHERE id = ? AND schedule_id = ?
+            """
+            updated_task = CURSOR.execute(sql_fetch, (self.id, self.schedule_id)).fetchone()
+            return type(self).instance_from_db(updated_task) 
+        else:
+            print("Update Unsuccessful")
+
         #if I update thru here, I will update the database and not the python class
         #that is where instance_from_db come in handy
         #because it will search for any values that do not match with python class and updates it on the spot.

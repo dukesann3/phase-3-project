@@ -93,7 +93,8 @@ def remove_task_from_schedule(task):
         what_to_do_with_tasks(task)
     
 def update_task_from_schedule(task):
-    print("Update task: ")
+    #need to update the task.update function so it actually updates both database and python
+    print("Update task: \n")
     print(task)
     print("Press Enter to copy values from task" )
 
@@ -109,9 +110,11 @@ def update_task_from_schedule(task):
             else:
                 user_input_list.append(user_input)
 
-    task.update(user_input_list[0], user_input_list[1], user_input_list[2], user_input_list[3], user_input_list[4])
-    print("Task has been successfully updated: ")
-    print(task)
+    if task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4]):
+        print("Task has been successfully updated: \n")
+        print(task)
+    
+    what_to_do_with_tasks(task)
 
 
 
