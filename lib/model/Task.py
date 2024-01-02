@@ -47,13 +47,13 @@ class Task:
         return f"Task Information: \nName: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
 
     @classmethod
-    def start_end_time_comparator(cls, name, date, time, duration, id, schedule_id):
+    def start_end_time_comparator(cls, name, date, time, duration, schedule_id):
         #need to exclude search of current id...
         new_start_time = start_time_to_int(date, time)
         new_end_time = end_time_to_int(date, time, duration)
 
         for key in cls.all:
-            if cls.all[key].id == id and cls.all[key].schedule_id == schedule_id:
+            if cls.all[key].name == name and cls.all[key].schedule_id == schedule_id:
                 #ignores loop if loop is at current id.
                 continue
             current_self = cls.all[key]
@@ -66,10 +66,8 @@ class Task:
             end_time = end_time_to_int(date_, time_, duration_)
 
             if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
-                print("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
                 return False
             if name_ == name:
-                print("This name has been used already. Please choose a different name")
                 return False
             
         return True

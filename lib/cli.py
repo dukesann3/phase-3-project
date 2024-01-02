@@ -93,7 +93,7 @@ def what_to_do_with_tasks(task, selected_schedule):
     user_input = input("Please choose task action: ")
 
     if user_input == "1":
-        add_new_task_to_schedule(task)
+        add_new_task_to_schedule(task, selected_schedule)
     elif user_input == "2":
         remove_task_from_schedule(task)
     elif user_input == "3":
@@ -105,7 +105,7 @@ def what_to_do_with_tasks(task, selected_schedule):
 
     exit_program()
 
-def add_new_task_to_schedule(task):
+def add_new_task_to_schedule(task, selected_schedule):
     from model.Task import Task
     #schedule id should come from task.schedule_id
     task_name = input("Enter Task Name: ")
@@ -116,10 +116,14 @@ def add_new_task_to_schedule(task):
 
     task_duration = float(task_duration)
 
-    new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, task.schedule_id)
-    print("Added New Task: ")
-    print(new_task)
-    what_to_do_with_tasks(task)
+    try:
+        new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, task.schedule_id)
+        print("Added New Task: ")
+        print(new_task)
+    except:
+        print("\nUpdate Unsuccessful. Either Dates/Times were interfering with existing ones or name has already been used in existing task\n")
+
+    what_to_do_with_tasks(task, selected_schedule)
 
 def remove_task_from_schedule(task):
     if task:
@@ -153,7 +157,7 @@ def update_task_from_schedule(task, selected_schedule):
         print("Task has been successfully updated: \n")
         print(task)
     except:
-        print("Update Unsuccessful. Either Dates/Times were interfering with existing ones or name has already been used in existing task")
+        print("\nUpdate Unsuccessful. Either Dates/Times were interfering with existing ones or name has already been used in existing task\n")
     
     what_to_do_with_tasks(task, selected_schedule)
 

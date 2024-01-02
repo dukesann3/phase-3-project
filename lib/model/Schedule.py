@@ -144,9 +144,12 @@ class Schedule:
         return [Task.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
 
     def add_new_task(self, name, date, time, duration, description):
-        new_task = Task(name, date, time, duration, description, self.id)
-        new_task.save()
-        return new_task
+        try:
+            new_task = Task(name, date, time, duration, description, self.id)
+            new_task.save()
+            return new_task
+        except:
+            print("Try again")
     
 
 
