@@ -26,7 +26,7 @@ class Task:
             start_time = start_time_to_int(date_, time_)
             end_time = end_time_to_int(date_, time_, duration_)
 
-            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time:
+            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
             if name_ == name:
                 raise ValueError("This name has been used already. Please choose a different name")
@@ -65,7 +65,7 @@ class Task:
             start_time = start_time_to_int(date_, time_)
             end_time = end_time_to_int(date_, time_, duration_)
 
-            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time:
+            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
                 print("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
                 return False
             if name_ == name:
@@ -224,13 +224,14 @@ class Task:
         return [cls.instance_from_db(task) for task in all_tasks]
     
     def update(self, name, date, time, duration, description):
-        sql = """
-            UPDATE Task 
-            SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
-            WHERE id = ?
-        """
+        #should compare variables first then update the thing right? Pretty stupid if I didn't??????
 
         if type(self).start_end_time_comparator(name, date, time, duration, self.id, self.schedule_id):
+            sql = """
+                UPDATE Task 
+                SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
+                WHERE id = ?
+            """
             CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
             CONN.commit()
             sql_fetch = """
@@ -240,12 +241,8 @@ class Task:
             updated_task = CURSOR.execute(sql_fetch, (self.id, self.schedule_id)).fetchone()
             return type(self).instance_from_db(updated_task) 
         else:
-            print("Update Unsuccessful")
+            raise ValueError("Cannot be processed due to improper date/time/duration or name configuration")
 
-        #if I update thru here, I will update the database and not the python class
-        #that is where instance_from_db come in handy
-        #because it will search for any values that do not match with python class and updates it on the spot.
-        #the caveat is that the instance_from_db must be used every time the CLI is being called to SHOW the results 
 
     def delete(self):
         sql = """
