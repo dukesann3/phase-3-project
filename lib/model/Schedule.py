@@ -109,6 +109,7 @@ class Schedule:
         CURSOR.execute(sql, (self.name, self.id))
         CONN.commit()
 
+
     def delete(self):
         sql = """
             DELETE FROM Schedule
@@ -116,6 +117,7 @@ class Schedule:
         """
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
+        del type(self).all[self.id]
 
     @classmethod
     def find_by_id(cls, id):

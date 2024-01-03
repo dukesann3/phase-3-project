@@ -22,6 +22,17 @@ def add_new_schedule(name):
     except Exception as error:
         print("An error has occurred: ", error)
 
+def delete_schedule(schedule_name):
+    schedule = Schedule.find_by_name(schedule_name)
+    user_input = input("Are you sure you want to delete this? (y/n): ")
+    if user_input.lower() == 'y':
+        try:
+            print("Successfully deleted Schedule: \n")
+            print(schedule)
+            schedule.delete()
+        except Exception as error:
+            print(f"\nAn error occurred: {error}\n")
+
 
 
 
