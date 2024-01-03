@@ -33,6 +33,32 @@ def delete_schedule(schedule_name):
         except Exception as error:
             print(f"\nAn error occurred: {error}\n")
 
+def edit_schedule(schedule_name):
+    #need property values for this class again
+    schedule = Schedule.find_by_name(schedule_name)
+    print("Update task: \n")
+    print(schedule)
+    print("Press Enter to copy values from task" )
+
+    user_input_list = []
+    user_input = ""
+
+    for property, value in vars(schedule).items():
+        if property.startswith("_") and not property == "id":
+            clean_property = property[1:]
+            user_input = input(f"Enter Task {clean_property}: ")
+            if not user_input:
+                user_input_list.append(value)
+            else:
+                user_input_list.append(user_input)
+
+    try:
+        schedule.update(user_input_list[0])
+        print("Schedule has been successfully updated: \n")
+        print(schedule)
+    except Exception as error:
+        print(f"\nAn error occurred: {error}\n")
+
 
 
 

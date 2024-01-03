@@ -100,15 +100,27 @@ class Schedule:
         #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
         return [cls.instance_from_db(schedule) for schedule in all_schedules]
         
-    def update(self):
+    def update(self, name):
+        #loops through all dictionary to see if the name has already been used in the past
+        for key in type(self).all:
+            current_self = type(self).all[key]
+            name_ = current_self.name
+            if name == name_:
+                raise ValueError("This name has already been used. Cannot have duplicate")
+    
         sql = """
             UPDATE Schedule 
             SET name = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.id))
+        CURSOR.execute(sql, (name, self.id))
         CONN.commit()
-
+        sql_fetch = """
+            SELECT * FROM Schedule
+            WHERE id = ?
+        """
+        updated_task = CURSOR.execute(sql_fetch, (self.id, )).fetchone()
+        return type(self).instance_from_db(updated_task) 
 
     def delete(self):
         sql = """

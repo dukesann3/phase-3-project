@@ -3,7 +3,8 @@ from helpers import (
     exit_program,
     display_all_schedules,
     add_new_schedule,
-    delete_schedule
+    delete_schedule,
+    edit_schedule
 )
 
 
@@ -33,25 +34,33 @@ def schedule_screen():
 
     if user_input == 1:
         schedule_name = input("\nPlease Enter New Schedule Name: ")
+
         add_new_schedule(schedule_name)
         schedule_screen()
     elif user_input == 2:
         print("All Schedules Listed Below: \n")
+
         display_all_schedules()
         user_input_2 = input("Enter Schedule Name Here: ")
+
         delete_schedule(user_input_2)
         schedule_screen()
-        #it should lead the user to a function that gives the user the ability to choose which schedule to remove.
-        #needs warning message before deleting like are you really sure about this?????
     elif user_input == 3:
-        #edit schedule
-        #just editting the name of the schedule
-        pass
+        print("All Schedules Listed Below: \n")
+
+        display_all_schedules()
+        user_input_2 = input("Enter Schedule Name Here: ")
+
+        edit_schedule(user_input_2)
+        schedule_screen()
     elif user_input == 4:
         display_all_schedules()
         print("Press \"H\" to Return Home")
+
         print("Press any other Key to go back to Pick Schedule Screen\n")
+
         user_input_2 = input("Please Choose Action: ")
+        
         if user_input_2.upper() == "H":
             welcome_screen()
         else:
