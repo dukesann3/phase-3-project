@@ -1,5 +1,5 @@
 #lib/model/Schedule.py
-from model.__init__ import CURSOR, CONN
+from model.__init__ import CONN, CURSOR
 from model.Task import Task
 
 class Schedule:
@@ -10,8 +10,9 @@ class Schedule:
         new_obj = super().__new__(cls)
 
         for key in cls.all:
-            print(cls.all[key].name)
-            if cls.all[key].name == name:
+            current_self = cls.all[key]
+            name_ = current_self.name
+            if name_ == name:
                 raise ValueError("This name has already been used. Cannot have duplicate")
         
         return new_obj

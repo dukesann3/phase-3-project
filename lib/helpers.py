@@ -14,6 +14,14 @@ def display_all_schedules():
         if schedule == all_schedule[-1]:
             print("\n")
 
+def add_new_schedule(name):
+    try:
+        new_schedule = Schedule.create(name)
+        print("Added New Schedule: \n")
+        print(new_schedule)
+    except Exception as error:
+        print("An error has occurred: ", error)
+
 
 
 

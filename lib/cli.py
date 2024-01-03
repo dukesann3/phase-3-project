@@ -2,7 +2,7 @@
 from helpers import (
     exit_program,
     display_all_schedules,
-    print_all_property_of_obj
+    add_new_schedule
 )
 
 
@@ -31,7 +31,9 @@ def schedule_screen():
     user_input = int(user_input)
 
     if user_input == 1:
-        pass
+        schedule_name = input("\nPlease Enter New Schedule Name: ")
+        add_new_schedule(schedule_name)
+        schedule_screen()
         #adds new schedule.
         #it should lead the user to a function that allows the user to straight up start creating a new schedule
     elif user_input == 2:
@@ -124,10 +126,10 @@ def add_new_task_to_schedule(task, selected_schedule):
 
     try:
         new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, task.schedule_id)
-        print("Added New Task: ")
+        print("Added New Task: \n")
         print(new_task)
-    except:
-        print("\nUpdate Unsuccessful. Either Dates/Times were interfering with existing ones or name has already been used in existing task\n")
+    except Exception as error:
+        print(f"\nAn error occurred: {error}\n")
 
     what_to_do_with_tasks(task, selected_schedule)
 
@@ -138,8 +140,8 @@ def remove_task_from_schedule(task, selected_schedule):
             print("Successfully deleted Task: \n")
             print(task)
             task.delete()
-        except:
-            print("Task cannot be deleted")
+        except Exception as error:
+            print(f"\nAn error occurred: {error}\n")
 
     what_to_do_with_tasks(task, selected_schedule)
     
@@ -165,10 +167,20 @@ def update_task_from_schedule(task, selected_schedule):
         task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4])
         print("Task has been successfully updated: \n")
         print(task)
-    except:
-        print("\nUpdate Unsuccessful. Either Dates/Times were interfering with existing ones or name has already been used in existing task\n")
+    except Exception as error:
+        print(f"\nAn error occurred: {error}\n")
     
     what_to_do_with_tasks(task, selected_schedule)
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

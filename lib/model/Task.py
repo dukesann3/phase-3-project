@@ -66,9 +66,9 @@ class Task:
             end_time = end_time_to_int(date_, time_, duration_)
 
             if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
-                return False
+                raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
             if name_ == name:
-                return False
+                raise ValueError("This name has been used already. Please choose a different name")
             
         return True
 
@@ -224,22 +224,20 @@ class Task:
     def update(self, name, date, time, duration, description):
         #should compare variables first then update the thing right? Pretty stupid if I didn't??????
 
-        if type(self).start_end_time_comparator(name, date, time, duration, self.id, self.schedule_id):
-            sql = """
-                UPDATE Task 
-                SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
-                WHERE id = ?
-            """
-            CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
-            CONN.commit()
-            sql_fetch = """
-                SELECT * FROM Task
-                WHERE id = ? AND schedule_id = ?
-            """
-            updated_task = CURSOR.execute(sql_fetch, (self.id, self.schedule_id)).fetchone()
-            return type(self).instance_from_db(updated_task) 
-        else:
-            raise ValueError("Cannot be processed due to improper date/time/duration or name configuration")
+        type(self).start_end_time_comparator(name, date, time, duration, self.schedule_id)
+        sql = """
+            UPDATE Task 
+            SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
+        CONN.commit()
+        sql_fetch = """
+            SELECT * FROM Task
+            WHERE id = ? AND schedule_id = ?
+        """
+        updated_task = CURSOR.execute(sql_fetch, (self.id, self.schedule_id)).fetchone()
+        return type(self).instance_from_db(updated_task) 
 
 
     def delete(self):
@@ -288,6 +286,9 @@ class Task:
         return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
     #find by description will come later.
+
+
+
     
     
 
