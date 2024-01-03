@@ -15,17 +15,17 @@ def main():
         welcome_screen()
 
 def welcome_screen():
-    print("WELCOME TO SCHEDULING CLI SOFTWARE")
+    print("\nWELCOME TO SCHEDULING CLI SOFTWARE")
     input("Press any key to continue ")
     schedule_screen()
 
 def schedule_screen():
-    print("Please choose the following: ")
+    print("\nPlease choose the following: ")
     print("1. Add Schedule")
     print("2. Remove Schedule")
     print("3. Edit Schedule")
     print("4. Display all Schedule")
-    print("5. Add/Remove/Edit Tasks in Schedule")
+    print("5. Add/Remove/Edit Tasks in Schedule\n")
 
     user_input = input("Please choose the following to continue. ")
     user_input = int(user_input)
@@ -45,9 +45,14 @@ def schedule_screen():
         pass
     elif user_input == 4:
         display_all_schedules()
-        #need an exit function after this
+        print("Press \"H\" to Return Home")
+        print("Press any other Key to go back to Pick Schedule Screen\n")
+        user_input_2 = input("Please Choose Action: ")
+        if user_input_2.upper() == "H":
+            welcome_screen()
+        else:
+            schedule_screen()
     elif user_input == 5:
-        #shows the user which schedule to choose from
         display_all_schedules()
         select_schedule()
         
@@ -68,9 +73,11 @@ def show_details_in_schedule(selected_schedule):
     #show pretty much everything that is in the schedule
     
     all_tasks = selected_schedule.tasks()
+    print("======================================\n")
     for task in all_tasks:
         print(task)
         #try to print task as a table
+    print("======================================")
     
     select_specific_task(all_tasks, selected_schedule)
 
@@ -84,26 +91,25 @@ def select_specific_task(all_tasks, selected_schedule):
     select_specific_task(all_tasks, selected_schedule)
 
 def what_to_do_with_tasks(task, selected_schedule):
-    print("Choose the following: ")
+    print("\nChoose the following: ")
     print("1. Add New Task To Schedule")
     print(f"2. Delete Selected Task: {task.name}")
     print(f"3. Edit Selected Task: {task.name}")
-    print("Any other key to exit")
+    print("Press \"H\" to Return Home")
+    print("Press any other Key to go back to Pick Schedule Screen\n")
 
-    user_input = input("Please choose task action: ")
-
+    user_input = input("Please Choose Action: ")
     if user_input == "1":
         add_new_task_to_schedule(task, selected_schedule)
     elif user_input == "2":
-        remove_task_from_schedule(task)
+        remove_task_from_schedule(task, selected_schedule)
     elif user_input == "3":
         update_task_from_schedule(task, selected_schedule)
-    elif user_input == "test":
-        print_all_property_of_obj(task)
+    elif user_input.upper() == "H":
+        welcome_screen()
     else:
-        show_details_in_schedule(selected_schedule)
+        schedule_screen()
 
-    exit_program()
 
 def add_new_task_to_schedule(task, selected_schedule):
     from model.Task import Task
@@ -125,14 +131,17 @@ def add_new_task_to_schedule(task, selected_schedule):
 
     what_to_do_with_tasks(task, selected_schedule)
 
-def remove_task_from_schedule(task):
-    if task:
-        print("Successfully deleted Task: \n")
-        print(task)
-        task.delete()
-    else:
-        print("Task cannot be deleted")
-        what_to_do_with_tasks(task)
+def remove_task_from_schedule(task, selected_schedule):
+    user_input = input("Are you sure you want to delete this? (y/n): ")
+    if user_input == 'y':
+        try:
+            print("Successfully deleted Task: \n")
+            print(task)
+            task.delete()
+        except:
+            print("Task cannot be deleted")
+
+    what_to_do_with_tasks(task, selected_schedule)
     
 def update_task_from_schedule(task, selected_schedule):
     #need to update the task.update function so it actually updates both database and python

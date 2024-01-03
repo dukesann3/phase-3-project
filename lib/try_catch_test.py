@@ -8,4 +8,3 @@ def try_catch():
     except:
         print("oops this was an error")
 
-try_catch()

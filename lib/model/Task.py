@@ -249,6 +249,7 @@ class Task:
         """
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
+        del type(self).all[self.id]
 
     @classmethod
     def find_by_id(cls, id):
