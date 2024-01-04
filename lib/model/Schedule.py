@@ -13,7 +13,7 @@ class Schedule:
             current_self = cls.all[key]
             name_ = current_self.name
             if name_ == name:
-                raise ValueError("This name has already been used. Cannot have duplicate")
+                raise ValueError(f"This name: {name} has already been used. Cannot have duplicate")
         
         return new_obj
 
@@ -106,7 +106,7 @@ class Schedule:
             current_self = type(self).all[key]
             name_ = current_self.name
             if name == name_:
-                raise ValueError("This name has already been used. Cannot have duplicate")
+                raise ValueError(f"This name: {name} has already been used. Cannot have duplicate")
     
         sql = """
             UPDATE Schedule 
@@ -147,7 +147,11 @@ class Schedule:
             WHERE name = ?
         """
         retrieved_schedule = CURSOR.execute(sql, (name,)).fetchone()
-        return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+        if retrieved_schedule:
+            return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+        else: 
+            raise NameError(f"\"{name}\" DOES NOT EXIST IN DATABASE")
+
 
     def tasks(self):
         from model.Task import Task

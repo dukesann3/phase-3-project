@@ -285,9 +285,28 @@ class Task:
         retrieved_tasks = CURSOR.execute(sql, (time,)).fetchall()
         return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
-    
-    
-    #find by description will come later.
+    @classmethod
+    def find_by_start_and_end_time(cls, date, time, duration):
+
+        task_bucket = []
+
+        new_start_time = start_time_to_int(date, time)
+        new_end_time = end_time_to_int(date, time, duration)
+
+        for key in cls.all:
+            current_self = cls.all[key]
+            date_ = current_self.date
+            time_ = current_self.time
+            duration_ = current_self.duration
+
+            start_time = start_time_to_int(date_, time_)
+            end_time = end_time_to_int(date_, time_, duration_)
+
+            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
+                task_bucket.append(cls.all[key])
+
+        return task_bucket
+
 
 
 

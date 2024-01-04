@@ -34,12 +34,12 @@ def delete_schedule(schedule):
         except Exception as error:
             print(f"\nAN ERROR HAS OCCURRED: {error}\n")
 
-def edit_schedule(schedule_name):
+def edit_schedule(schedule):
     #need property values for this class again
-    schedule = Schedule.find_by_name(schedule_name)
-    print("Update task: \n")
+    print("UPDATE SCHEDULE: \n")
     print(schedule)
-    print("Press Enter to copy values from task" )
+    print("PRESS ENTER TO COPY ORIGINAL VALUE OF SCHEDULE" )
+    print("INPUT NEW VALUE TO REPLACE ORIGINAL VALUE")
 
     user_input_list = []
     user_input = ""
@@ -47,7 +47,7 @@ def edit_schedule(schedule_name):
     for property, value in vars(schedule).items():
         if property.startswith("_") and not property == "id":
             clean_property = property[1:]
-            user_input = input(f"Enter Task {clean_property}: ")
+            user_input = input(f"ENTER SCHEDULE {clean_property}: ")
             if not user_input:
                 user_input_list.append(value)
             else:
@@ -55,10 +55,10 @@ def edit_schedule(schedule_name):
 
     try:
         schedule.update(user_input_list[0])
-        print("Schedule has been successfully updated: \n")
+        print("SCHEDULE HAS BEEN SUCCESSFULLY UPDATED: \n")
         print(schedule)
     except Exception as error:
-        print(f"\nAn error occurred: {error}\n")
+        print(f"\nAN ERROR HAS OCCURRED: {error}\n")
 
 def schedule_search_by_name(name):
     try:
@@ -67,7 +67,25 @@ def schedule_search_by_name(name):
         print(f"FOUND SCHEDULE WITH NAME: {found_schedule.name}\n")
         return found_schedule
     except Exception as error:
-        print(f"\nAN ERROR OCCURRED: {error}\n")
+        print("AN ERROR HAS OCCURRED: ", error)
+
+def display_all_tasks_in_schedule(schedule):
+    all_tasks = schedule.tasks()
+    print("============================")
+    for task in all_tasks:
+        print(task)
+    print("============================")
+
+def task_search_by_name(name):
+    try:
+        found_task = Task.find_by_name(name)
+        print("1 RESULT FOUND \n")
+        print(f"FOUND TASK WITH NAME: {found_task.name}\n")
+        return found_task
+    except Exception as error:
+        print("AN ERROR HAS OCCURRED: ", error)
+
+
 
 
 

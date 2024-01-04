@@ -5,7 +5,9 @@ from helpers import (
     add_new_schedule,
     delete_schedule,
     edit_schedule,
-    schedule_search_by_name
+    schedule_search_by_name,
+    display_all_tasks_in_schedule,
+    task_search_by_name
 )
 
 #add backspace and return to home functionalities please for each stage
@@ -58,7 +60,10 @@ def schedule_chooser_screen():
 
         schedule_name = input("PLEASE ENTER SCHEDULE NAME HERE: ")
         found_schedule = schedule_search_by_name(schedule_name)
-        edit_current_schedule_or_search_for_tasks_screen(found_schedule)
+        if found_schedule:
+            edit_current_schedule_or_search_for_tasks_screen(found_schedule)
+        else:
+            schedule_chooser_screen()
 
     elif user_input.upper() == "B":
         schedule_or_task_screen()
@@ -92,6 +97,26 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         
         delete_schedule(schedule)
         edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "3":
+
+        edit_schedule(schedule)
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "4":
+
+        display_all_tasks_in_schedule(schedule)
+        input("PLEASE PRESS ANY BUTTON TO CONTINUE")
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "5":
+
+        task_name = input("PLEASE ENTER TASK NAME HERE: ")
+        found_task = task_search_by_name(task_name)
+        if found_task:
+            pass
+        else:
+            edit_current_schedule_or_search_for_tasks_screen(schedule)
 
 
 
