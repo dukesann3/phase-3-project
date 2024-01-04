@@ -4,13 +4,12 @@ from helpers import (
     display_all_schedules,
     add_new_schedule,
     delete_schedule,
-    edit_schedule
+    edit_schedule,
+    schedule_search_by_name
 )
-
 
 #add backspace and return to home functionalities please for each stage
 #and also try to show all of (either task or schedule) after giving the user the choice of add/remove/editting their (task/schedule)
-
 
 def main():
     while True:
@@ -19,7 +18,88 @@ def main():
 def welcome_screen():
     print("\nWELCOME TO SCHEDULING CLI SOFTWARE")
     input("Press any key to continue ")
-    schedule_screen()
+    schedule_or_task_screen()
+
+def schedule_or_task_screen():
+    print("\nPLEASE CHOOSE THE FOLLOWING SCHEDULE OR TASK TO EXPLORE")
+    print("SCHEDULE        | PRESS 1")
+    print("TASK            | PRESS 2")
+    print("=====================================================================")
+    print("PREVIOUS SCREEN | PRESS B")
+    print("WELCOME SCREEN  | PRESS H\n")
+    user_input = input("Please Choose the Following to Continue: ")
+
+    if user_input == "1":
+        schedule_chooser_screen()
+    elif user_input == "2":
+        #go to task chooser screen
+        pass
+    elif user_input.upper() == "B" or "H":
+        welcome_screen()
+    else:
+        schedule_or_task_screen()
+
+def schedule_chooser_screen():
+    print("\nPLEASE CHOOSE THE FOLLOWING METHODS OF SELECTING SCHEDULE")
+    print("DISPLAY ALL SCHEDULE(S) IN DB | PRESS 1")
+    print("SEARCH SCHEDULE VIA NAME      | PRESS 2")
+    print("=====================================================================")
+    print("PREVIOUS SCREEN               | PRESS B")
+    print("WELCOME SCREEN                | PRESS H\n")
+    user_input = input("Please Choose the Following to Continue: ")
+
+    if user_input == "1":
+
+        display_all_schedules()
+        input("PRESS ANY BUTTON TO CONTINUE CHOOSING SCHEDULE")
+        schedule_chooser_screen()
+
+    elif user_input == "2":
+
+        schedule_name = input("PLEASE ENTER SCHEDULE NAME HERE: ")
+        found_schedule = schedule_search_by_name(schedule_name)
+        edit_current_schedule_or_search_for_tasks_screen(found_schedule)
+
+    elif user_input.upper() == "B":
+        schedule_or_task_screen()
+    elif user_input.upper() == "H":
+        welcome_screen()
+    else:
+        schedule_chooser_screen()
+
+def edit_current_schedule_or_search_for_tasks_screen(schedule):
+    print(f"\nSCHEDULE {schedule.name} OPTION BELOW")
+    print("ADD NEW SCHEDULE TO DATABASE                    | PRESS 1")
+    print("REMOVE (THIS) SCHEDULE                          | PRESS 2")
+    print("EDIT (THIS) SCHEDULE                            | PRESS 3")
+    print("=====================================================================")
+    print("TASK SEARCH OPTION BELOW")
+    print("SEE ALL TASKS IN SCHEDULE                       | PRESS 4")
+    print("SEARCH TASKS IN SCHEDULE VIA TASK NAME          | PRESS 5")
+    print("SEARCH TASKS IN SCHEDULE VIA START AND END TIME | PRESS 6")
+    print("=====================================================================")
+    print("PREVIOUS SCREEN                                 | PRESS B")
+    print("WELCOME SCREEN                                  | PRESS H\n")
+    user_input = input("Please Choose the Following to Continue: ")
+
+    if user_input == "1":
+
+        new_schedule_name = input("PLEASE ENTER NEW SCHEDULE NAME: ")
+        add_new_schedule(new_schedule_name)
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "2":
+        
+        delete_schedule(schedule)
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+
+
+
+##############################################################################################
+        
+
+
 
 def schedule_screen():
     print("\nPlease choose the following: ")
@@ -28,6 +108,8 @@ def schedule_screen():
     print("3. Edit Schedule")
     print("4. Display all Schedule")
     print("5. Add/Remove/Edit Tasks in Schedule\n")
+    print("6. Search Schedules")
+    print("7. Search Tasks")
 
     user_input = input("Please choose the following to continue. ")
     user_input = int(user_input)
@@ -60,7 +142,7 @@ def schedule_screen():
         print("Press any other Key to go back to Pick Schedule Screen\n")
 
         user_input_2 = input("Please Choose Action: ")
-        
+
         if user_input_2.upper() == "H":
             welcome_screen()
         else:
@@ -68,6 +150,10 @@ def schedule_screen():
     elif user_input == 5:
         display_all_schedules()
         select_schedule()
+    elif user_input == 6:
+        pass
+    elif user_input == 7:
+        pass
         
 def select_schedule():
     #select individual schedule by name
@@ -182,6 +268,18 @@ def update_task_from_schedule(task, selected_schedule):
         print(f"\nAn error occurred: {error}\n")
     
     what_to_do_with_tasks(task, selected_schedule)
+
+def schedule_search_options():
+    print("1. Search via Schedule name")
+
+def task_search_options():
+    print("1. Search via Task Name")
+    print("2. Search via Task Date")
+    print("3. Search via Task Start to End Time")
+
+
+    
+
 
 
 

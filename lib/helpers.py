@@ -8,30 +8,31 @@ def exit_program():
 
 def display_all_schedules():
     all_schedule = Schedule.get_all()
+    print("============================")
     for schedule in all_schedule:
         print("\n")
         print(schedule)
         if schedule == all_schedule[-1]:
             print("\n")
+    print("============================")
 
 def add_new_schedule(name):
     try:
         new_schedule = Schedule.create(name)
-        print("Added New Schedule: \n")
+        print("ADDED NEW SCHEDULE: \n")
         print(new_schedule)
     except Exception as error:
-        print("An error has occurred: ", error)
+        print("AN ERROR HAS OCCURRED: ", error)
 
-def delete_schedule(schedule_name):
-    schedule = Schedule.find_by_name(schedule_name)
-    user_input = input("Are you sure you want to delete this? (y/n): ")
+def delete_schedule(schedule):
+    user_input = input("ARE YOU SURE YOU WANT TO DELETE THIS? (y/n): ")
     if user_input.lower() == 'y':
         try:
-            print("Successfully deleted Schedule: \n")
+            print("DELETION SUCCESSFUL: \n")
             print(schedule)
             schedule.delete()
         except Exception as error:
-            print(f"\nAn error occurred: {error}\n")
+            print(f"\nAN ERROR HAS OCCURRED: {error}\n")
 
 def edit_schedule(schedule_name):
     #need property values for this class again
@@ -58,6 +59,15 @@ def edit_schedule(schedule_name):
         print(schedule)
     except Exception as error:
         print(f"\nAn error occurred: {error}\n")
+
+def schedule_search_by_name(name):
+    try:
+        found_schedule = Schedule.find_by_name(name)
+        print("1 RESULT FOUND \n")
+        print(f"FOUND SCHEDULE WITH NAME: {found_schedule.name}\n")
+        return found_schedule
+    except Exception as error:
+        print(f"\nAN ERROR OCCURRED: {error}\n")
 
 
 
