@@ -126,11 +126,16 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         task_start_time = input("PLEASE ENTER SEARCH START DATE HERE IN (MM/DD/YYYY) FORMAT: ")
         task_end_time = input("PLEASE ENTER SEARCH END DATE HERE IN (MM/DD/YYYY) FORMAT: ")
 
-        found_task = task_search_by_start_and_end_time(task_start_time, task_end_time)
-        if len(found_task) > 0:
-            print(found_task)
-        else:
+        found_task = task_search_by_start_and_end_time(task_start_time, task_end_time, schedule.id)
+        if len(found_task) <= 0:
             edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input.upper() == "B":
+        schedule_chooser_screen()
+    elif user_input.upper() == "H":
+        welcome_screen()
+    else:
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
 
 
 

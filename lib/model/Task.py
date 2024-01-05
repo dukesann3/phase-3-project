@@ -293,14 +293,13 @@ class Task:
         return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
     @classmethod
-    def find_by_start_and_end_time(cls, start_time, end_time):
+    def find_by_start_and_end_time_ind(cls, start_time, end_time, schedule_id):
 
         task_bucket = []
 
         start = start_time_to_int(start_time, "12:00am")
         end = start_time_to_int(end_time, "12:00am")
 
-        cls.get_all()
         for key in cls.all:
             current_self = cls.all[key]
             date_ = current_self.date
@@ -310,8 +309,9 @@ class Task:
             A = start_time_to_int(date_, time_)
             B = end_time_to_int(date_, time_, duration_)
 
-            if start <= A <= end or start <= B <= end or (A < start and B > end):
-                task_bucket.append(cls.all[key])
+            if current_self.schedule_id == schedule_id:
+                if start <= A <= end or start <= B <= end or (A < start and B > end):
+                    task_bucket.append(cls.all[key])
 
         return task_bucket
 
