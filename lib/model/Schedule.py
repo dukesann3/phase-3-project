@@ -19,9 +19,6 @@ class Schedule:
 
     def __init__(self, name):
         self.name = name
-
-    def __repr__(self):
-        return f"Schedule Name: {self.name}"
     
     @property
     def name(self):
@@ -99,6 +96,15 @@ class Schedule:
 
         #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
         return [cls.instance_from_db(schedule) for schedule in all_schedules]
+
+    @classmethod
+    def no_return_get_all(cls):
+        sql = """
+            SELECT * FROM Schedule;
+        """
+        all_schedules = CURSOR.execute(sql).fetchall()
+        for schedule in all_schedules:
+            cls.instance_from_db(schedule)
         
     def update(self, name):
         #loops through all dictionary to see if the name has already been used in the past

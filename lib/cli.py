@@ -7,7 +7,9 @@ from helpers import (
     edit_schedule,
     schedule_search_by_name,
     display_all_tasks_in_schedule,
-    task_search_by_name
+    task_search_by_name,
+    task_search_by_start_and_end_time,
+    populate_all_dict
 )
 
 #add backspace and return to home functionalities please for each stage
@@ -18,6 +20,7 @@ def main():
         welcome_screen()
 
 def welcome_screen():
+    populate_all_dict()
     print("\nWELCOME TO SCHEDULING CLI SOFTWARE")
     input("Press any key to continue ")
     schedule_or_task_screen()
@@ -115,6 +118,17 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         found_task = task_search_by_name(task_name)
         if found_task:
             pass
+        else:
+            edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "6":
+
+        task_start_time = input("PLEASE ENTER SEARCH START DATE HERE IN (MM/DD/YYYY) FORMAT: ")
+        task_end_time = input("PLEASE ENTER SEARCH END DATE HERE IN (MM/DD/YYYY) FORMAT: ")
+
+        found_task = task_search_by_start_and_end_time(task_start_time, task_end_time)
+        if len(found_task) > 0:
+            print(found_task)
         else:
             edit_current_schedule_or_search_for_tasks_screen(schedule)
 
@@ -304,7 +318,6 @@ def task_search_options():
 
 
     
-
 
 
 

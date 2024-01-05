@@ -6,6 +6,11 @@ def exit_program():
     print("Good bye!")
     exit()
 
+def populate_all_dict():
+    Schedule.no_return_get_all()
+    Task.no_return_get_all()
+
+
 def display_all_schedules():
     all_schedule = Schedule.get_all()
     print("============================")
@@ -82,8 +87,23 @@ def task_search_by_name(name):
         print("1 RESULT FOUND \n")
         print(f"FOUND TASK WITH NAME: {found_task.name}\n")
         return found_task
-    except Exception as error:
-        print("AN ERROR HAS OCCURRED: ", error)
+    except:
+        print("FOUND 0 RESULTS")
+
+
+def task_search_by_start_and_end_time(start_time, end_time):
+    try:
+        found_tasks = Task.find_by_start_and_end_time(start_time, end_time)
+        print(f"{len(found_tasks)} RESULT(S) FOUND \n")
+        print("============================")
+        for task in found_tasks:
+            print(task)
+        print("============================")
+        return found_tasks
+    except:
+        print("FOUND 0 RESULTS")
+
+
 
 
 

@@ -41,10 +41,6 @@ class Task:
         self.duration = duration
         self.description = description
         self.schedule_id = schedule_id
-        
-
-    def __repr__(self):
-        return f"Task Information: \nName: {self.name}\nDate: {self.date}\nTime: {self.time}\nDuration: {self.duration} hours\nDescription: {self.description}\n"
 
     @classmethod
     def start_end_time_comparator(cls, name, date, time, duration, schedule_id):
@@ -221,6 +217,17 @@ class Task:
 
         return [cls.instance_from_db(task) for task in all_tasks]
     
+    @classmethod
+    def no_return_get_all(cls):
+        sql = """
+            SELECT * FROM Task;
+        """
+
+        all_tasks = CURSOR.execute(sql).fetchall()
+        for task in all_tasks:
+            cls.instance_from_db(task)
+
+    
     def update(self, name, date, time, duration, description):
         #should compare variables first then update the thing right? Pretty stupid if I didn't??????
 
@@ -286,23 +293,24 @@ class Task:
         return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
     @classmethod
-    def find_by_start_and_end_time(cls, date, time, duration):
+    def find_by_start_and_end_time(cls, start_time, end_time):
 
         task_bucket = []
 
-        new_start_time = start_time_to_int(date, time)
-        new_end_time = end_time_to_int(date, time, duration)
+        start = start_time_to_int(start_time, "12:00am")
+        end = start_time_to_int(end_time, "12:00am")
 
+        cls.get_all()
         for key in cls.all:
             current_self = cls.all[key]
             date_ = current_self.date
             time_ = current_self.time
             duration_ = current_self.duration
 
-            start_time = start_time_to_int(date_, time_)
-            end_time = end_time_to_int(date_, time_, duration_)
+            A = start_time_to_int(date_, time_)
+            B = end_time_to_int(date_, time_, duration_)
 
-            if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
+            if start <= A <= end or start <= B <= end or (A < start and B > end):
                 task_bucket.append(cls.all[key])
 
         return task_bucket

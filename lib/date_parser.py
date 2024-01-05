@@ -208,6 +208,3 @@ def end_time_to_int(date, time, duration):
 
 
 
-
-
-
