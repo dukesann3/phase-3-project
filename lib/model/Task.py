@@ -41,6 +41,13 @@ class Task:
         self.duration = duration
         self.description = description
         self.schedule_id = schedule_id
+    
+    def __repr__(self):
+        return (f"\nTASK NAME: {self.name}\n"
+                f"TASK DATE: {self.date}\n"
+                f"TASK START TIME: {self.time}\n"
+                f"TASK DURATION: {self.duration}\n"
+                f"TASK DESCRIPTION: {self.description}\n")
 
     @classmethod
     def start_end_time_comparator(cls, name, date, time, duration, schedule_id):

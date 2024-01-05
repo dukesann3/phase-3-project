@@ -20,6 +20,10 @@ class Schedule:
     def __init__(self, name):
         self.name = name
     
+    def __repr__(self):
+        return f"\nSchedule Name: {self.name}"
+
+    
     @property
     def name(self):
         return self._name
