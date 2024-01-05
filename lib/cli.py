@@ -9,7 +9,8 @@ from helpers import (
     display_all_tasks_in_schedule,
     task_search_by_name,
     task_search_by_start_and_end_time,
-    populate_all_dict
+    populate_all_dict,
+    add_new_task_to_schedule
 )
 
 #add backspace and return to home functionalities please for each stage
@@ -83,8 +84,9 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
     print("=====================================================================")
     print("TASK SEARCH OPTION BELOW")
     print("SEE ALL TASKS IN SCHEDULE                       | PRESS 4")
-    print("SEARCH TASKS IN SCHEDULE VIA TASK NAME          | PRESS 5")
-    print("SEARCH TASKS IN SCHEDULE VIA START AND END TIME | PRESS 6")
+    print("ADD NEW TASK TO SCHEDULE                        | PRESS 5")
+    print("SEARCH TASKS IN SCHEDULE VIA TASK NAME          | PRESS 6")
+    print("SEARCH TASKS IN SCHEDULE VIA START AND END TIME | PRESS 7")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
     print("WELCOME SCREEN                                  | PRESS H\n")
@@ -114,6 +116,11 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
 
     elif user_input == "5":
 
+        add_new_task_to_schedule(schedule)
+        edit_current_schedule_or_search_for_tasks_screen(schedule)
+
+    elif user_input == "6":
+
         task_name = input("PLEASE ENTER TASK NAME HERE: ")
         found_task = task_search_by_name(task_name)
         if found_task:
@@ -121,7 +128,7 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         else:
             edit_current_schedule_or_search_for_tasks_screen(schedule)
 
-    elif user_input == "6":
+    elif user_input == "7":
 
         task_start_time = input("PLEASE ENTER SEARCH START DATE HERE IN (MM/DD/YYYY) FORMAT: ")
         task_end_time = input("PLEASE ENTER SEARCH END DATE HERE IN (MM/DD/YYYY) FORMAT: ")
@@ -137,6 +144,8 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
     else:
         edit_current_schedule_or_search_for_tasks_screen(schedule)
 
+def task_chooser_screen():
+    pass
 
 
 
@@ -254,25 +263,7 @@ def what_to_do_with_tasks(task, selected_schedule):
         schedule_screen()
 
 
-def add_new_task_to_schedule(task, selected_schedule):
-    from model.Task import Task
-    #schedule id should come from task.schedule_id
-    task_name = input("Enter Task Name: ")
-    task_date = input("Enter Task Date: ")
-    task_time = input("Enter Task Start Time: ")
-    task_duration = input("Enter Task Duration: ")
-    task_description = input("Enter Task Description: ")
 
-    task_duration = float(task_duration)
-
-    try:
-        new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, task.schedule_id)
-        print("Added New Task: \n")
-        print(new_task)
-    except Exception as error:
-        print(f"\nAn error occurred: {error}\n")
-
-    what_to_do_with_tasks(task, selected_schedule)
 
 def remove_task_from_schedule(task, selected_schedule):
     user_input = input("Are you sure you want to delete this? (y/n): ")

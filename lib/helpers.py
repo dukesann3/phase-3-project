@@ -103,6 +103,24 @@ def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
     except:
         print("FOUND 0 RESULTS")
 
+def add_new_task_to_schedule(selected_schedule):
+    from model.Task import Task
+    #schedule id should come from task.schedule_id
+    task_name = input("Enter Task Name: ")
+    task_date = input("Enter Task Date: ")
+    task_time = input("Enter Task Start Time: ")
+    task_duration = input("Enter Task Duration: ")
+    task_description = input("Enter Task Description: ")
+
+    task_duration = float(task_duration)
+
+    try:
+        new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, selected_schedule.id)
+        print("Added New Task: \n")
+        print(new_task)
+    except Exception as error:
+        print(f"\nAn error occurred: {error}\n")
+
 
 
 
