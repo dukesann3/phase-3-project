@@ -1,10 +1,10 @@
 from model.Schedule import Schedule
 from model.Task import Task
-from test import (print_all_property_of_obj)
+import sys, os
 
 def exit_program():
     print("Good bye!")
-    exit()
+    sys.exit()
 
 def populate_all_dict():
     Schedule.no_return_get_all()

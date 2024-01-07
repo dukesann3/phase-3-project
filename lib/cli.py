@@ -16,6 +16,7 @@ from helpers import (
     display_all_tasks_in_db,
     task_search_by_start_and_end_time_in_db
 )
+import sys
 
 #add backspace and return to home functionalities please for each stage
 #and also try to show all of (either task or schedule) after giving the user the choice of add/remove/editting their (task/schedule)
@@ -36,7 +37,8 @@ def schedule_or_task_screen():
     print("TASK            | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN | PRESS B")
-    print("WELCOME SCREEN  | PRESS H\n")
+    print("WELCOME SCREEN  | PRESS H")
+    print("EXIT PROGRAM    | PRESS X\n")
     user_input = input("Please Choose the Following to Continue: ")
 
     if user_input == "1":
@@ -44,8 +46,10 @@ def schedule_or_task_screen():
     elif user_input == "2":
         #go to task chooser screen
         task_chooser_screen_no_schedule()
-    elif user_input.upper() == "B" or "H":
+    elif user_input.upper() == "B" or user_input.upper() == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         schedule_or_task_screen()
 
@@ -55,7 +59,8 @@ def schedule_chooser_screen():
     print("SEARCH SCHEDULE VIA NAME      | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN               | PRESS B")
-    print("WELCOME SCREEN                | PRESS H\n")
+    print("WELCOME SCREEN                | PRESS H")
+    print("EXIT PROGRAM                  | PRESS X\n")
     user_input = input("Please Choose the Following to Continue: ")
 
     if user_input == "1":
@@ -77,6 +82,8 @@ def schedule_chooser_screen():
         schedule_or_task_screen()
     elif user_input.upper() == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         schedule_chooser_screen()
 
@@ -93,7 +100,8 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
     print("SEARCH TASKS IN SCHEDULE VIA START AND END TIME | PRESS 7")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
-    print("WELCOME SCREEN                                  | PRESS H\n")
+    print("WELCOME SCREEN                                  | PRESS H")
+    print("EXIT PROGRAM                                    | PRESS X\n")
     user_input = input("Please Choose the Following to Continue: ")
 
     if user_input == "1":
@@ -147,13 +155,16 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         schedule_chooser_screen()
     elif user_input.upper() == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         edit_current_schedule_or_search_for_tasks_screen(schedule)
 
 def task_chooser_screen(schedule):
     #should exclusively be used on every task chooser except for find by name
     print("SELECT TASK        | PRESS 1")
-    print("EXIT TASK SELECTOR | PRESS ANY")
+    print("EXIT PROGRAM       | PRESS X")
+    print("EXIT TASK SELECTOR | PRESS ANY\n")
 
     user_input = input("Please Choose the Following to Continue: ")
 
@@ -165,12 +176,15 @@ def task_chooser_screen(schedule):
             edit_current_schedule_or_search_for_tasks_screen(schedule)
         else:
             task_chooser_screen(schedule)
+    elif user_input.upper == "X":
+        exit_program()
     else:
         edit_current_schedule_or_search_for_tasks_screen(schedule)
 
 def task_selector_no_schedule():
     print("SELECT TASK        | PRESS 1")
-    print("EXIT TASK SELECTOR | PRESS ANY")
+    print("EXIT PROGRAM       | PRESS X")
+    print("EXIT TASK SELECTOR | PRESS ANY\n")
 
     user_input = input("Please Choose the Following to Continue: ")
 
@@ -182,6 +196,8 @@ def task_selector_no_schedule():
             task_chooser_screen_no_schedule()
         else:
             task_chooser_screen_no_schedule()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         task_chooser_screen_no_schedule()
 
@@ -191,7 +207,8 @@ def task_chooser_screen_no_schedule():
     print("SEARCH TASK VIA START AND END DATES | PRESS 3")
     print("=====================================================================")
     print("PREVIOUS SCREEN                     | PRESS B")
-    print("WELCOME SCREEN                      | PRESS H\n")
+    print("WELCOME SCREEN                      | PRESS H")
+    print("EXIT PROGRAM                        | PRESS X\n")
 
     user_input = input("Please Choose the Following to Continue: ")
 
@@ -218,6 +235,8 @@ def task_chooser_screen_no_schedule():
         schedule_or_task_screen()
     elif user_input.upper == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         task_chooser_screen_no_schedule()
 
@@ -227,7 +246,8 @@ def task_editor_screen_no_schedule(task):
     print("EDIT (THIS) SCHEDULE                            | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
-    print("WELCOME SCREEN                                  | PRESS H\n")
+    print("WELCOME SCREEN                                  | PRESS H")
+    print("EXIT PROGRAM                                    | PRESS X\n")
 
     user_input = input("Please Choose the Following to Continue: ")
 
@@ -241,6 +261,8 @@ def task_editor_screen_no_schedule(task):
         task_chooser_screen_no_schedule()
     elif user_input.upper() == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         task_editor_screen_no_schedule(task)
 
@@ -251,7 +273,8 @@ def task_editor_screen(schedule, task):
     print("EDIT (THIS) SCHEDULE                            | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
-    print("WELCOME SCREEN                                  | PRESS H\n")
+    print("WELCOME SCREEN                                  | PRESS H")
+    print("EXIT PROGRAM                                    | PRESS X\n")
 
     user_input = input("Please Choose the Following to Continue: ")
 
@@ -265,6 +288,8 @@ def task_editor_screen(schedule, task):
         edit_current_schedule_or_search_for_tasks_screen(schedule)
     elif user_input.upper() == "H":
         welcome_screen()
+    elif user_input.upper() == "X":
+        exit_program()
     else:
         task_editor_screen(schedule, task)
 
