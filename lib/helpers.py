@@ -84,12 +84,13 @@ def display_all_tasks_in_schedule(schedule):
 def task_search_by_name(name):
     try:
         found_task = Task.find_by_name(name)
+        print(found_task, name)
         print("1 RESULT FOUND \n")
         print(f"FOUND TASK WITH NAME: {found_task.name}\n")
         return found_task
-    except:
+    except Exception as error:
+        print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
-
 
 def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
     try:
@@ -118,6 +119,41 @@ def add_new_task_to_schedule(selected_schedule):
         new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, selected_schedule.id)
         print("Added New Task: \n")
         print(new_task)
+    except Exception as error:
+        print(f"\nAn error occurred: {error}\n")
+
+def remove_task_from_schedule(task):
+    user_input = input("Are you sure you want to delete this? (y/n): ")
+    if user_input == 'y':
+        try:
+            print("Successfully deleted Task: \n")
+            print(task)
+            task.delete()
+        except Exception as error:
+            print(f"\nAn error occurred: {error}\n")
+
+def update_task_from_schedule(task):
+    #need to update the task.update function so it actually updates both database and python
+    print("Update task: \n")
+    print(task)
+    print("Press Enter to copy original values from task" )
+
+    user_input_list = []
+    user_input = ""
+
+    for property, value in vars(task).items():
+        if property.startswith("_") and not property == "id" and not property == "_schedule_id":
+            clean_property = property[1:]
+            user_input = input(f"Enter Task {clean_property}: ")
+            if not user_input:
+                user_input_list.append(value)
+            else:
+                user_input_list.append(user_input)
+    
+    try:
+        task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4])
+        print("Task has been successfully updated: \n")
+        print(task)
     except Exception as error:
         print(f"\nAn error occurred: {error}\n")
 

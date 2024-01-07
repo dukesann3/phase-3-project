@@ -30,6 +30,8 @@ class Task:
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
             if name_ == name:
                 raise ValueError("This name has been used already. Please choose a different name")
+            if " " in name:
+                raise ValueError("Task name shall be without spaces")
             
         return new_obj
 
@@ -72,6 +74,8 @@ class Task:
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
             if name_ == name:
                 raise ValueError("This name has been used already. Please choose a different name")
+            if " " in name:
+                raise ValueError("Task name shall be without spaces")
             
         return True
 
@@ -279,7 +283,10 @@ class Task:
             WHERE name = ?
         """
         retrieved_task = CURSOR.execute(sql, (name,)).fetchone()
-        return cls.instance_from_db(retrieved_task) if retrieved_task else None
+        if retrieved_task:
+            return cls.instance_from_db(retrieved_task) if retrieved_task else None
+        else:
+            raise ValueError(f"Could not Find Task Name {name}")
 
     @classmethod
     def find_by_date(cls, date):
