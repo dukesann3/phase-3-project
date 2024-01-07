@@ -10,7 +10,6 @@ def populate_all_dict():
     Schedule.no_return_get_all()
     Task.no_return_get_all()
 
-
 def display_all_schedules():
     all_schedule = Schedule.get_all()
     print("============================")
@@ -80,6 +79,7 @@ def display_all_tasks_in_schedule(schedule):
     for task in all_tasks:
         print(task)
     print("============================")
+
 
 def task_search_by_name(name):
     try:
@@ -156,6 +156,25 @@ def update_task_from_schedule(task):
         print(task)
     except Exception as error:
         print(f"\nAn error occurred: {error}\n")
+
+def display_all_tasks_in_db():
+    all_tasks = Task.get_all()
+    print("============================")
+    for task in all_tasks:
+        print(task)
+    print("============================")
+
+def task_search_by_start_and_end_time_in_db(start_time, end_time):
+    try:
+        found_tasks = Task.find_by_start_and_end_time(start_time, end_time)
+        print(f"{len(found_tasks)} RESULT(S) FOUND \n")
+        print("============================")
+        for task in found_tasks:
+            print(task)
+        print("============================")
+        return found_tasks
+    except:
+        print("FOUND 0 RESULTS")
 
 
 

@@ -329,6 +329,28 @@ class Task:
 
         return task_bucket
 
+    @classmethod
+    def find_by_start_and_end_time(cls, start_time, end_time):
+
+        task_bucket = []
+
+        start = start_time_to_int(start_time, "12:00am")
+        end = start_time_to_int(end_time, "12:00am")
+
+        for key in cls.all:
+            current_self = cls.all[key]
+            date_ = current_self.date
+            time_ = current_self.time
+            duration_ = current_self.duration
+
+            A = start_time_to_int(date_, time_)
+            B = end_time_to_int(date_, time_, duration_)
+
+            if start <= A <= end or start <= B <= end or (A < start and B > end):
+                task_bucket.append(cls.all[key])
+
+        return task_bucket 
+
 
 
 
