@@ -16,7 +16,7 @@ from helpers import (
     display_all_tasks_in_db,
     task_search_by_start_and_end_time_in_db
 )
-import sys
+
 
 #add backspace and return to home functionalities please for each stage
 #and also try to show all of (either task or schedule) after giving the user the choice of add/remove/editting their (task/schedule)
@@ -45,7 +45,7 @@ def schedule_or_task_screen():
         schedule_chooser_screen()
     elif user_input == "2":
         #go to task chooser screen
-        task_chooser_screen_no_schedule()
+        search_for_tasks_screen_no_schedule()
     elif user_input.upper() == "B" or user_input.upper() == "H":
         welcome_screen()
     elif user_input.upper() == "X":
@@ -181,7 +181,7 @@ def task_chooser_screen(schedule):
     else:
         edit_current_schedule_or_search_for_tasks_screen(schedule)
 
-def task_selector_no_schedule():
+def task_chooser_screen_no_schedule():
     print("SELECT TASK        | PRESS 1")
     print("EXIT PROGRAM       | PRESS X")
     print("EXIT TASK SELECTOR | PRESS ANY\n")
@@ -193,15 +193,15 @@ def task_selector_no_schedule():
         found_task = task_search_by_name(task)
         if found_task:
             task_editor_screen_no_schedule(found_task)
-            task_chooser_screen_no_schedule()
+            search_for_tasks_screen_no_schedule()
         else:
-            task_chooser_screen_no_schedule()
+            search_for_tasks_screen_no_schedule()
     elif user_input.upper() == "X":
         exit_program()
     else:
-        task_chooser_screen_no_schedule()
+        search_for_tasks_screen_no_schedule()
 
-def task_chooser_screen_no_schedule():
+def search_for_tasks_screen_no_schedule():
     print("SEE ALL TASKS IN DATABASE           | PRESS 1")
     print("SEARCH TASK VIA TASK NAME           | PRESS 2")
     print("SEARCH TASK VIA START AND END DATES | PRESS 3")
@@ -215,22 +215,23 @@ def task_chooser_screen_no_schedule():
     if user_input == "1":
         display_all_tasks_in_db()
         input("PLEASE PRESS ANY BUTTON TO CONTINUE")
+        search_for_tasks_screen_no_schedule()
     elif user_input == "2":
         task_name = input("PLEASE ENTER TASK NAME HERE: ")
         found_task = task_search_by_name(task_name)
         if found_task:
             task_editor_screen_no_schedule(found_task)
-            task_chooser_screen_no_schedule()
+            search_for_tasks_screen_no_schedule()
         else:
-            task_chooser_screen_no_schedule()
+            search_for_tasks_screen_no_schedule()
     elif user_input == "3":
         task_start_time = input("PLEASE ENTER SEARCH START DATE HERE IN (MM/DD/YYYY) FORMAT: ")
         task_end_time = input("PLEASE ENTER SEARCH END DATE HERE IN (MM/DD/YYYY) FORMAT: ")
 
         found_task = task_search_by_start_and_end_time_in_db(task_start_time, task_end_time)
         if found_task:
-            task_selector_no_schedule()
             task_chooser_screen_no_schedule()
+            search_for_tasks_screen_no_schedule()
     elif user_input.upper() == 'B':
         schedule_or_task_screen()
     elif user_input.upper == "H":
@@ -238,7 +239,7 @@ def task_chooser_screen_no_schedule():
     elif user_input.upper() == "X":
         exit_program()
     else:
-        task_chooser_screen_no_schedule()
+        search_for_tasks_screen_no_schedule()
 
 def task_editor_screen_no_schedule(task):
     print(f"\nTASK {task.name} OPTION BELOW")
@@ -258,7 +259,7 @@ def task_editor_screen_no_schedule(task):
         update_task_from_schedule(task)
         task_editor_screen_no_schedule(task)
     elif user_input.upper() == "B":
-        task_chooser_screen_no_schedule()
+        search_for_tasks_screen_no_schedule()
     elif user_input.upper() == "H":
         welcome_screen()
     elif user_input.upper() == "X":

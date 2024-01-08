@@ -113,9 +113,8 @@ def add_new_task_to_schedule(selected_schedule):
     task_duration = input("Enter Task Duration: ")
     task_description = input("Enter Task Description: ")
 
-    task_duration = float(task_duration)
-
     try:
+        task_duration = float(task_duration)
         new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, selected_schedule.id)
         print("Added New Task: \n")
         print(new_task)
