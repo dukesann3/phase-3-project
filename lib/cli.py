@@ -113,7 +113,7 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
     elif user_input == "2":
         
         delete_schedule(schedule)
-        edit_current_schedule_or_search_for_tasks_screen(schedule)
+        schedule_chooser_screen()
 
     elif user_input == "3":
 
@@ -243,8 +243,8 @@ def search_for_tasks_screen_no_schedule():
 
 def task_editor_screen_no_schedule(task):
     print(f"\nTASK {task.name} OPTION BELOW")
-    print("REMOVE (THIS) SCHEDULE                          | PRESS 1")
-    print("EDIT (THIS) SCHEDULE                            | PRESS 2")
+    print("REMOVE (THIS) TASK                              | PRESS 1")
+    print("EDIT (THIS) TASK                                | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
     print("WELCOME SCREEN                                  | PRESS H")
@@ -270,8 +270,8 @@ def task_editor_screen_no_schedule(task):
 
 def task_editor_screen(schedule, task):
     print(f"\nTASK {task.name} OPTION BELOW")
-    print("REMOVE (THIS) SCHEDULE                          | PRESS 1")
-    print("EDIT (THIS) SCHEDULE                            | PRESS 2")
+    print("REMOVE (THIS) TASK                              | PRESS 1")
+    print("EDIT (THIS) TASK                                | PRESS 2")
     print("=====================================================================")
     print("PREVIOUS SCREEN                                 | PRESS B")
     print("WELCOME SCREEN                                  | PRESS H")
