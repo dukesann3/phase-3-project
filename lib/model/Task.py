@@ -13,8 +13,10 @@ class Task:
 
         new_obj = super().__new__(cls)
 
+        time = time.lower()
         new_start_time = start_time_to_int(date, time)
         new_end_time = end_time_to_int(date, time, duration)
+
 
         for key in cls.all:
             current_self = cls.all[key]
@@ -37,6 +39,7 @@ class Task:
 
 
     def __init__(self, name, date, time, duration, description, schedule_id):
+        time = time.lower()
         self.name = name
         self.date = date
         self.time = time

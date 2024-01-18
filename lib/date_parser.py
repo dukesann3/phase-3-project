@@ -142,8 +142,10 @@ def convert_time_to_ampm(time):
     return ampm_time
 
 def start_time_to_int(date, time):
+
     time_ = convert_time_to_twentyfour(time)
     time_ = parse_time(time_)
+
 
     hour_ = str(time_["hour"]) if time_["hour"] >= 10 else "0" + str(time_["hour"])
     minute_ = str(time_["minute"]) if time_["minute"] >= 10 else "0" + str(time_["minute"])

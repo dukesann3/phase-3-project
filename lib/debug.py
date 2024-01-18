@@ -1,5 +1,7 @@
 from model.Schedule import Schedule
 from model.Task import Task
+import ipdb
+
 
 def testing_create_table():
     Schedule.create_table()
@@ -14,5 +16,8 @@ def testing_create_table():
     Task.create("CookingClass@12pm", "04/03/2025", "12:00pm", 1, "Cooking orientation at 12pm", cooking_schedule.id)
     Task.create("CookingEggs@4am", "05/02/2025", "04:00am", 3, "Cooking eggs at 4am", cooking_schedule.id)
 
+def debugger():
+    ipdb.set_trace()
+#testing_create_table()
 
-testing_create_table()
+debugger()
