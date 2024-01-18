@@ -48,7 +48,8 @@ class Task:
         self.schedule_id = schedule_id
     
     def __repr__(self):
-        return (f"\nTASK NAME: {self.name}\n"
+        return (f"\nTask Code: {self.id}\n"
+                f"TASK NAME: {self.name}\n"
                 f"TASK DATE: {self.date}\n"
                 f"TASK START TIME: {self.time}\n"
                 f"TASK DURATION: {self.duration}\n"
@@ -277,7 +278,10 @@ class Task:
             WHERE id = ?
         """
         retrieved_task = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(retrieved_task) if retrieved_task else None
+        if retrieved_task:
+            return cls.instance_from_db(retrieved_task) if retrieved_task else None
+        else:
+            raise ValueError(f"Could not Find Task Code: {id}")
     
     @classmethod
     def find_by_name(cls, name):

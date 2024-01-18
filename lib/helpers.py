@@ -12,35 +12,40 @@ def populate_all_dict():
 
 def display_all_schedules():
     all_schedule = Schedule.get_all()
-    print("============================")
+    border()
     for schedule in all_schedule:
-        print("\n")
+        space()
         print(schedule)
         if schedule == all_schedule[-1]:
-            print("\n")
-    print("============================")
+            space()
+    border()
 
 def add_new_schedule(name):
     try:
         new_schedule = Schedule.create(name)
-        print("ADDED NEW SCHEDULE: \n")
+        print("ADDED NEW SCHEDULE: ")
+        space()
         print(new_schedule)
     except Exception as error:
+        space()
         print("AN ERROR HAS OCCURRED: ", error)
 
 def delete_schedule(schedule):
     user_input = input("ARE YOU SURE YOU WANT TO DELETE THIS? (y/n): ")
     if user_input.lower() == 'y':
         try:
-            print("DELETION SUCCESSFUL: \n")
+            print("DELETION SUCCESSFUL: ")
+            space()
             print(schedule)
             schedule.delete()
         except Exception as error:
-            print(f"\nAN ERROR HAS OCCURRED: {error}\n")
+            space()
+            print(f"AN ERROR HAS OCCURRED: {error}")
 
 def edit_schedule(schedule):
     #need property values for this class again
-    print("UPDATE SCHEDULE: \n")
+    print("UPDATE SCHEDULE: ")
+    space()
     print(schedule)
     print("PRESS ENTER TO COPY ORIGINAL VALUE OF SCHEDULE" )
     print("INPUT NEW VALUE TO REPLACE ORIGINAL VALUE")
@@ -59,49 +64,87 @@ def edit_schedule(schedule):
 
     try:
         schedule.update(user_input_list[0])
-        print("SCHEDULE HAS BEEN SUCCESSFULLY UPDATED: \n")
+        print("SCHEDULE HAS BEEN SUCCESSFULLY UPDATED: ")
+        space()
         print(schedule)
     except Exception as error:
-        print(f"\nAN ERROR HAS OCCURRED: {error}\n")
+        space()
+        print(f"AN ERROR HAS OCCURRED: {error}")
 
 def schedule_search_by_name(name):
     try:
         found_schedule = Schedule.find_by_name(name)
-        print("1 RESULT FOUND \n")
-        print(f"FOUND SCHEDULE WITH NAME: {found_schedule.name}\n")
+        print("1 RESULT FOUND ")
+        space()
+        print(f"FOUND SCHEDULE WITH NAME: {found_schedule.name}")
+        space()
         return found_schedule
     except Exception as error:
+        space()
+        print("AN ERROR HAS OCCURRED: ", error)
+
+def schedule_search_by_id(id):
+    try:
+        found_schedule = Schedule.find_by_id(id)
+        print("1 RESULT FOUND ")
+        space()
+        print(f"FOUND SCHEDULE WITH SCHEDULE CODE: {found_schedule.id}")
+        space()
+        return found_schedule 
+    except Exception as error:
+        space()
         print("AN ERROR HAS OCCURRED: ", error)
 
 def display_all_tasks_in_schedule(schedule):
     all_tasks = schedule.tasks()
-    print("============================")
+    border()
     for task in all_tasks:
         print(task)
-    print("============================")
+    border()
 
 
 def task_search_by_name(name):
     try:
         found_task = Task.find_by_name(name)
         print(found_task, name)
-        print("1 RESULT FOUND \n")
-        print(f"FOUND TASK WITH NAME: {found_task.name}\n")
+        print("1 RESULT FOUND ")
+        space()
+        print(f"FOUND TASK WITH NAME: {found_task.name}")
+        space()
         return found_task
     except Exception as error:
+        space()
         print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
+
+def task_search_by_id(id):
+    try:
+        found_task = Task.find_by_id(id)
+        print(found_task, id)
+        print("1 RESULT FOUND ")
+        space()
+        print(f"FOUND TASK WITH TASK CODE: {found_task.id}")
+        space()
+        return found_task
+    except Exception as error:
+        space()
+        print("AN ERROR HAS OCCURRED: ", error)
+        print("FOUND 0 RESULTS")
+
 
 def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
     try:
         found_tasks = Task.find_by_start_and_end_time_ind(start_time, end_time, schedule_id)
-        print(f"{len(found_tasks)} RESULT(S) FOUND \n")
-        print("============================")
+        print(f"{len(found_tasks)} RESULT(S) FOUND ")
+        space()
+        border()
         for task in found_tasks:
             print(task)
-        print("============================")
+        border()
         return found_tasks
-    except:
+    except Exception as error:
+        space()
+        print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
 
 def add_new_task_to_schedule(selected_schedule):
@@ -116,24 +159,29 @@ def add_new_task_to_schedule(selected_schedule):
     try:
         task_duration = float(task_duration)
         new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, selected_schedule.id)
-        print("TASK ADDED SUCCESSFULLY: \n")
+        print("TASK ADDED SUCCESSFULLY: ")
+        space()
         print(new_task)
     except Exception as error:
-        print(f"\nAn error occurred: {error}\n")
+        space()
+        print(f"AN ERROR HAS OCCURRED: {error}")
 
 def remove_task_from_schedule(task):
     user_input = input("Are you sure you want to delete this? (y/n): ")
     if user_input == 'y':
         try:
-            print("Successfully deleted Task: \n")
+            print("Successfully deleted Task: ")
+            space()
             print(task)
             task.delete()
         except Exception as error:
-            print(f"\nAn error occurred: {error}\n")
+            space()
+            print(f"AN ERROR HAS OCCURRED: {error}")
 
 def update_task_from_schedule(task):
     #need to update the task.update function so it actually updates both database and python
-    print("Update task: \n")
+    print("Update task: ")
+    space()
     print(task)
     print("Press Enter to copy original values from task" )
 
@@ -151,29 +199,44 @@ def update_task_from_schedule(task):
     
     try:
         task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4])
-        print("Task has been successfully updated: \n")
+        print("Task has been successfully updated: ")
+        space()
         print(task)
     except Exception as error:
-        print(f"\nAn error occurred: {error}\n")
+        space()
+        print(f"An error occurred: {error}")
 
 def display_all_tasks_in_db():
     all_tasks = Task.get_all()
-    print("============================")
+    border()
     for task in all_tasks:
         print(task)
-    print("============================")
+    border()
 
 def task_search_by_start_and_end_time_in_db(start_time, end_time):
     try:
         found_tasks = Task.find_by_start_and_end_time(start_time, end_time)
-        print(f"{len(found_tasks)} RESULT(S) FOUND \n")
-        print("============================")
+        print(f"{len(found_tasks)} RESULT(S) FOUND ")
+        space()
+        border()
         for task in found_tasks:
             print(task)
-        print("============================")
+        border()
         return found_tasks
     except:
+        space()
         print("FOUND 0 RESULTS")
+
+def space():
+    print("")
+
+def border():
+    print("============================")
+
+def long_border():
+    print("=====================================================================")
+
+
 
 
 

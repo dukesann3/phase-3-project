@@ -21,7 +21,8 @@ class Schedule:
         self.name = name
     
     def __repr__(self):
-        return f"\nSchedule Name: {self.name}"
+        return (f"Schedule Code: {self.id}\n"
+                f"Schedule Name: {self.name}")
 
     
     @property
@@ -148,7 +149,10 @@ class Schedule:
             WHERE id = ?
         """
         retrieved_schedule = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+        if retrieved_schedule:
+            return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
+        else:
+            raise ValueError(f"Could Not Find Schedule Code: {id}")
     
     @classmethod
     def find_by_name(cls, name):
