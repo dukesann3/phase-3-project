@@ -20,4 +20,4 @@ def debugger():
     ipdb.set_trace()
 #testing_create_table()
 
-debugger()
+testing_create_table()

@@ -32,8 +32,6 @@ class Task:
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
             if name_ == name:
                 raise ValueError("This name has been used already. Please choose a different name")
-            if " " in name:
-                raise ValueError("Task name shall be without spaces")
             
         return new_obj
 
@@ -76,10 +74,8 @@ class Task:
 
             if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
-            if name_ == name:
+            if name_.lower() == name.lower():
                 raise ValueError("This name has been used already. Please choose a different name")
-            if " " in name:
-                raise ValueError("Task name shall be without spaces")
             
         return True
 
@@ -114,10 +110,18 @@ class Task:
     
     @time.setter
     def time(self, time):
-        allowable_time_pattern = r"(0[1-9]|1[0-2]):[0-5][0-9](a|p)m"
-        allowable_time_regex = re.compile(allowable_time_pattern)
 
-        if isinstance(time, str) and allowable_time_regex.fullmatch(time):
+        time = time.lower()
+
+        global_pattern = r"(0[1-9]|1[0-2]|[1-9]):[0-5][0-9](a|p)m"
+        no_front_zero = r"[1-9]:[0-5][0-9](a|p)m"
+
+        global_pattern_regex = re.compile(global_pattern)
+        no_front_zero_regex = re.compile(no_front_zero)
+
+        if isinstance(time, str) and bool(global_pattern_regex.fullmatch(time)):
+            if bool(no_front_zero_regex.fullmatch(time)):
+                time = "0" + time
             self._time = time
         else:
             raise TypeError("Time must be a string and be in ##:##am/pm format")
@@ -355,6 +359,10 @@ class Task:
 
             if start <= A <= end or start <= B <= end or (A < start and B > end):
                 task_bucket.append(cls.all[key])
+
+        if not task_bucket:
+            raise ValueError("No Tasks Exist In Between Those Times")
+        
 
         return task_bucket 
 

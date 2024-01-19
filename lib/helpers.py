@@ -29,6 +29,7 @@ def add_new_schedule(name):
     except Exception as error:
         space()
         print("AN ERROR HAS OCCURRED: ", error)
+        space()
 
 def delete_schedule(schedule):
     user_input = input("ARE YOU SURE YOU WANT TO DELETE THIS? (y/n): ")
@@ -41,6 +42,7 @@ def delete_schedule(schedule):
         except Exception as error:
             space()
             print(f"AN ERROR HAS OCCURRED: {error}")
+            space()
 
 def edit_schedule(schedule):
     #need property values for this class again
@@ -70,6 +72,7 @@ def edit_schedule(schedule):
     except Exception as error:
         space()
         print(f"AN ERROR HAS OCCURRED: {error}")
+        space()
 
 def schedule_search_by_name(name):
     try:
@@ -82,6 +85,7 @@ def schedule_search_by_name(name):
     except Exception as error:
         space()
         print("AN ERROR HAS OCCURRED: ", error)
+        space()
 
 def schedule_search_by_id(id):
     try:
@@ -94,6 +98,7 @@ def schedule_search_by_id(id):
     except Exception as error:
         space()
         print("AN ERROR HAS OCCURRED: ", error)
+        space()
 
 def display_all_tasks_in_schedule(schedule):
     all_tasks = schedule.tasks()
@@ -116,6 +121,7 @@ def task_search_by_name(name):
         space()
         print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
+        space()
 
 def task_search_by_id(id):
     try:
@@ -130,6 +136,7 @@ def task_search_by_id(id):
         space()
         print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
+        space()
 
 
 def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
@@ -146,6 +153,7 @@ def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
         space()
         print("AN ERROR HAS OCCURRED: ", error)
         print("FOUND 0 RESULTS")
+        space()
 
 def add_new_task_to_schedule(selected_schedule):
     from model.Task import Task
@@ -165,6 +173,7 @@ def add_new_task_to_schedule(selected_schedule):
     except Exception as error:
         space()
         print(f"AN ERROR HAS OCCURRED: {error}")
+        space()
 
 def remove_task_from_schedule(task):
     user_input = input("Are you sure you want to delete this? (y/n): ")
@@ -177,6 +186,7 @@ def remove_task_from_schedule(task):
         except Exception as error:
             space()
             print(f"AN ERROR HAS OCCURRED: {error}")
+            space()
 
 def update_task_from_schedule(task):
     #need to update the task.update function so it actually updates both database and python
@@ -205,6 +215,7 @@ def update_task_from_schedule(task):
     except Exception as error:
         space()
         print(f"An error occurred: {error}")
+        space()
 
 def display_all_tasks_in_db():
     all_tasks = Task.get_all()
@@ -226,6 +237,7 @@ def task_search_by_start_and_end_time_in_db(start_time, end_time):
     except:
         space()
         print("FOUND 0 RESULTS")
+        space()
 
 def space():
     print("")

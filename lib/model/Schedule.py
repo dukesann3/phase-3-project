@@ -12,7 +12,7 @@ class Schedule:
         for key in cls.all:
             current_self = cls.all[key]
             name_ = current_self.name
-            if name_ == name:
+            if name_.lower() == name.lower():
                 raise ValueError(f"This name: {name} has already been used. Cannot have duplicate")
         
         return new_obj

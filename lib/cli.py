@@ -175,7 +175,8 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         if found_task:
             task_chooser_screen(schedule)
             edit_current_schedule_or_search_for_tasks_screen(schedule)
-
+        else:
+            edit_current_schedule_or_search_for_tasks_screen(schedule)
     elif user_input.upper() == "B":
         schedule_chooser_screen()
     elif user_input.upper() == "H":
