@@ -50,7 +50,7 @@ def error_tester():
     except Exception as error:
         print("An error occurred: ", error)
 
-error_tester()
+
 
     
 

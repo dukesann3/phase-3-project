@@ -164,7 +164,19 @@ def add_new_task_to_schedule(selected_schedule):
     task_duration = input("Enter Task Duration (in hours): ")
     task_description = input("Enter Task Description: ")
 
+    task_dict = {
+        "name": task_name,
+        "date": task_date,
+        "time": task_time,
+        "duration": task_duration,
+        "description": task_description
+    }
+
     try:
+        for key in task_dict:
+            if not task_dict[key]:
+                raise ValueError(f"{key} must have a value")
+            
         task_duration = float(task_duration)
         new_task = Task.create(task_name, task_date, task_time, task_duration, task_description, selected_schedule.id)
         print("TASK ADDED SUCCESSFULLY: ")
@@ -231,6 +243,7 @@ def update_task_from_schedule(task):
         space()
         print(f"An error occurred: {error}")
         space()
+
 
 
 def display_all_tasks_in_db():
