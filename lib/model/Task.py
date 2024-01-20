@@ -13,7 +13,9 @@ class Task:
 
         new_obj = super().__new__(cls)
 
-        time = time.lower()
+        time = cls.time_corrector(time)
+        date = cls.date_corrector(date)
+
         new_start_time = start_time_to_int(date, time)
         new_end_time = end_time_to_int(date, time, duration)
 
@@ -54,28 +56,30 @@ class Task:
                 f"TASK DESCRIPTION: {self.description}\n")
 
     @classmethod
-    def start_end_time_comparator(cls, name, date, time, duration, schedule_id):
+    def start_end_time_comparator(cls, task_id, date, time, duration, schedule_id):
         #need to exclude search of current id...
+
+        #need to reformat date and time if it isn't correct!
+        date = cls.date_corrector(date)
+        time = cls.time_corrector(time)
+        
         new_start_time = start_time_to_int(date, time)
         new_end_time = end_time_to_int(date, time, duration)
 
         for key in cls.all:
-            if cls.all[key].name == name and cls.all[key].schedule_id == schedule_id:
+            if cls.all[key] == cls.all[task_id] and cls.all[key].schedule_id == schedule_id:
                 #ignores loop if loop is at current id.
                 continue
             current_self = cls.all[key]
             date_ = current_self.date
             time_ = current_self.time
             duration_ = current_self.duration
-            name_ = current_self.name
 
             start_time = start_time_to_int(date_, time_)
             end_time = end_time_to_int(date_, time_, duration_)
 
             if start_time <= new_start_time <= end_time or start_time <= new_end_time <= end_time or (new_start_time < start_time and new_end_time > end_time):
                 raise ValueError("This combination of date, time, and duration cannot be processed because it interferes with other schedules")
-            if name_.lower() == name.lower():
-                raise ValueError("This name has been used already. Please choose a different name")
             
         return True
 
@@ -89,20 +93,52 @@ class Task:
             self._name = name
         else:
             raise TypeError("Name must be a string longer than 0 characters")
-
+    
+    @classmethod
+    def name_checker(cls, name):
+        for key in cls.all:
+            if name == cls.all[key].name:
+                raise ValueError(f"The name {name} has already been used")
+        
     @property
     def date(self):
         return self._date
     
     @date.setter
     def date(self, date):
-        allowable_date_pattern = r"(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[0-1])/20[0-9][0-9]"
-        allowable_date_regex = re.compile(allowable_date_pattern)
+        global_pattern = r"(0[1-9]|1[0-2]|[1-9])/(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])/20[0-9][0-9]"
+        global_pattern_regex = re.compile(global_pattern)
 
-        if isinstance(date, str) and bool(allowable_date_regex.fullmatch(date)):
+        date_list = re.split(r"/", date)
+        index_of_non_zero_front = [count for count, component in enumerate(date_list) if len(component) < 2]
+
+        if isinstance(date, str) and global_pattern_regex.fullmatch(date):
+            if len(index_of_non_zero_front) > 0:
+                for index in index_of_non_zero_front:
+                    date_list[index] = "0" + date_list[index]
+                date = '/'.join(date_list)
+
             self._date = date
         else:
-            raise TypeError("Date must be a string and be in MM/DD/YYYY format")
+            raise ValueError("Date must be a string and be in MM/DD/YYYY format")
+    
+    @classmethod
+    def date_corrector(cls, date):
+        global_pattern = r"(0[1-9]|1[0-2]|[1-9])/(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])/20[0-9][0-9]"
+        global_pattern_regex = re.compile(global_pattern)
+
+        date_list = re.split(r"/", date)
+        index_of_non_zero_front = [count for count, component in enumerate(date_list) if len(component) < 2]
+
+        if isinstance(date, str) and global_pattern_regex.fullmatch(date):
+            if len(index_of_non_zero_front) > 0:
+                for index in index_of_non_zero_front:
+                    date_list[index] = "0" + date_list[index]
+                date = '/'.join(date_list)
+
+            return date
+        else:
+            raise ValueError("Date must be a string and be in MM/DD/YYYY format")
     
     @property
     def time(self):
@@ -126,6 +162,23 @@ class Task:
         else:
             raise TypeError("Time must be a string and be in ##:##am/pm format")
     
+    @classmethod
+    def time_corrector(cls, time):
+        time = time.lower()
+
+        global_pattern = r"(0[1-9]|1[0-2]|[1-9]):[0-5][0-9](a|p)m"
+        no_front_zero = r"[1-9]:[0-5][0-9](a|p)m"
+
+        global_pattern_regex = re.compile(global_pattern)
+        no_front_zero_regex = re.compile(no_front_zero)
+
+        if isinstance(time, str) and bool(global_pattern_regex.fullmatch(time)):
+            if bool(no_front_zero_regex.fullmatch(time)):
+                time = "0" + time
+            return time
+        else:
+            raise TypeError("Time must be a string and be in ##:##am/pm format")
+    
     @property
     def duration(self):
         return self._duration
@@ -137,6 +190,11 @@ class Task:
         else:
             raise TypeError("Duration must be an integer or float in terms of hours")
         
+    @classmethod
+    def duration_checker(cls, duration):
+        if not isinstance(duration, (int, float)):
+            raise TypeError("Duration must be an integer or float in terms of hours")
+        
     @property
     def description(self):
         return self._description
@@ -146,6 +204,11 @@ class Task:
         if isinstance(description, str):
             self._description = description
         else:
+            raise TypeError("Description must be a string")
+        
+    @classmethod
+    def description_checker(cls, description):
+        if not isinstance(description, str):
             raise TypeError("Description must be a string")
     
     @property
@@ -249,8 +312,10 @@ class Task:
     
     def update(self, name, date, time, duration, description):
         #should compare variables first then update the thing right? Pretty stupid if I didn't??????
+        #type(self).parameter_checker(name, date, time, duration, description)
+        #need to know which value is 
+        #type(self).start_end_time_comparator(name, date, time, duration, self.schedule_id)
 
-        type(self).start_end_time_comparator(name, date, time, duration, self.schedule_id)
         sql = """
             UPDATE Task 
             SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
@@ -365,6 +430,18 @@ class Task:
         
 
         return task_bucket 
+    
+    @classmethod
+    def parameter_checker(cls, name, date, time, duration, description):
+        #returns boolean
+        cls.time_corrector(time)
+        cls.date_corrector(date)
+        #cls.name_checker(name)
+        cls.duration_checker(duration)
+        cls.description_checker(description)
+
+
+
 
 
 

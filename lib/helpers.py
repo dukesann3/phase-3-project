@@ -198,24 +198,40 @@ def update_task_from_schedule(task):
     user_input_list = []
     user_input = ""
 
+    #this part is the vetting process of the user's proposed parameters
     for property, value in vars(task).items():
         if property.startswith("_") and not property == "id" and not property == "_schedule_id":
             clean_property = property[1:]
             user_input = input(f"Enter Task {clean_property}: ")
             if not user_input:
                 user_input_list.append(value)
+            elif clean_property == "name" and user_input:
+                try:
+                    Task.name_checker(clean_property)
+                    user_input_list.append(user_input)
+                except Exception as error:
+                    print(f"An error occurred: {error}")
             else:
                 user_input_list.append(user_input)
     
     try:
-        task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4])
-        print("Task has been successfully updated: ")
-        space()
-        print(task)
+        is_valid = Task.start_end_time_comparator(vars(task)["id"],user_input_list[1], user_input_list[2], float(user_input_list[3]),vars(task)["_schedule_id"])
+        if is_valid:
+            try:
+                print("creating new task instance")
+                task.update(user_input_list[0], user_input_list[1], user_input_list[2], float(user_input_list[3]), user_input_list[4])
+                print("Task has been successfully updated: ")
+                space()
+                print(task)
+            except Exception as error:
+                space()
+                print(f"An error occurred: {error}")
+                space()
     except Exception as error:
         space()
         print(f"An error occurred: {error}")
         space()
+
 
 def display_all_tasks_in_db():
     all_tasks = Task.get_all()

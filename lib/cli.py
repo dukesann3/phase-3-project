@@ -270,7 +270,7 @@ def search_for_tasks_screen_no_schedule():
             search_for_tasks_screen_no_schedule()
     elif user_input.upper() == 'B':
         schedule_or_task_screen()
-    elif user_input.upper == "H":
+    elif user_input.upper() == "H":
         welcome_screen()
     elif user_input.upper() == "X":
         exit_program()
