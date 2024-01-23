@@ -102,6 +102,7 @@ class Schedule:
         #iterates over all the rows in the schedule table and makes sure every instance/row is up-to-date
         return [cls.instance_from_db(schedule) for schedule in all_schedules]
 
+    #CHECK AND DELETE 
     @classmethod
     def no_return_get_all(cls):
         sql = """
@@ -176,13 +177,7 @@ class Schedule:
         retrieved_tasks = CURSOR.execute(sql, (self.id,)).fetchall()
         return [Task.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
 
-    def add_new_task(self, name, date, time, duration, description):
-        try:
-            new_task = Task(name, date, time, duration, description, self.id)
-            new_task.save()
-            return new_task
-        except:
-            print("Try again")
+
     
 
 

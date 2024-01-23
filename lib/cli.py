@@ -19,7 +19,12 @@ from helpers import (
     schedule_search_by_id,
     border,
     space,
-    long_border
+    long_border,
+    find_schedule_w_index,
+    display_task,
+    display_task_details,
+    find_task_w_index,
+    find_task_in_schedule_w_index
 )
 
 
@@ -81,7 +86,8 @@ def schedule_chooser_screen():
         print("Enter Schedule Code to View Schedule")
         user_search_value = input("Or do not enter anything to go back: ")
         if user_search_value:
-            found_schedule = schedule_search_by_id(user_search_value)
+            #make new function to search for index in Schedule
+            found_schedule = find_schedule_w_index(user_search_value)
             if found_schedule:
                 edit_current_schedule_or_search_for_tasks_screen(found_schedule)
             else:
@@ -139,11 +145,10 @@ def edit_current_schedule_or_search_for_tasks_screen(schedule):
         edit_current_schedule_or_search_for_tasks_screen(schedule)
 
     elif user_input == "3":
-
         display_all_tasks_in_schedule(schedule)
         print("Enter Task Code to view task")
         task_code = input("Or do not enter anything to go back: ")
-        found_task = task_search_by_id(task_code)
+        found_task = find_task_in_schedule_w_index(schedule, task_code)
         if found_task:
             task_editor_screen(schedule, found_task)
             edit_current_schedule_or_search_for_tasks_screen(schedule)
@@ -245,7 +250,7 @@ def search_for_tasks_screen_no_schedule():
         display_all_tasks_in_db()
         print("Enter Task Code to view task")
         task_code = input("Or do not enter anything to go back: ")
-        found_task = task_search_by_id(task_code)
+        found_task = find_task_w_index(task_code)
         if found_task:
             task_editor_screen_no_schedule(found_task)
             search_for_tasks_screen_no_schedule()

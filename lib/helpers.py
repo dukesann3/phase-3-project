@@ -13,9 +13,9 @@ def populate_all_dict():
 def display_all_schedules():
     all_schedule = Schedule.get_all()
     border()
-    for schedule in all_schedule:
+    for index, schedule in enumerate(all_schedule):
         space()
-        print(schedule)
+        display_schedule(schedule, index+1)
         if schedule == all_schedule[-1]:
             space()
     border()
@@ -101,12 +101,12 @@ def schedule_search_by_id(id):
         space()
 
 def display_all_tasks_in_schedule(schedule):
+    print(schedule)
     all_tasks = schedule.tasks()
     border()
-    for task in all_tasks:
-        print(task)
+    for index, task in enumerate(all_tasks):
+        display_task(task, index+1)
     border()
-
 
 def task_search_by_name(name):
     try:
@@ -249,8 +249,8 @@ def update_task_from_schedule(task):
 def display_all_tasks_in_db():
     all_tasks = Task.get_all()
     border()
-    for task in all_tasks:
-        print(task)
+    for index, task in enumerate(all_tasks):
+        display_task(task, index+1)
     border()
 
 def task_search_by_start_and_end_time_in_db(start_time, end_time):
@@ -267,6 +267,74 @@ def task_search_by_start_and_end_time_in_db(start_time, end_time):
         space()
         print("FOUND 0 RESULTS")
         space()
+
+#Finds schedule in index
+def find_schedule_w_index(index):
+    #index is incremented by one.  Make sure to subtract it by one
+    try:
+        index = int(index)
+        all_schedule = Schedule.get_all()
+        chosen_schedule = all_schedule[index-1]
+        space()
+        display_schedule(chosen_schedule, index)
+        space()
+        return chosen_schedule
+    except Exception as error:
+        print("AN ERROR HAS OCCURRED: ", error)
+        space()
+        return False
+    
+#Finds task in index
+def find_task_w_index(index):
+    #index is incremented by one.  Make sure to subtract it by one
+    try:
+        index = int(index)
+        all_tasks = Task.get_all()
+
+        chosen_task = all_tasks[index-1]
+        space()
+        display_task_details(chosen_task)
+        space()
+        return chosen_task
+    except Exception as error:
+        space()
+        print("AN ERROR HAS OCCURRED: ", error)
+        space()
+        return False
+    
+def find_task_in_schedule_w_index(schedule, index):
+    try:
+        index = int(index)
+        all_tasks = schedule.tasks()
+
+        chosen_task = all_tasks[index-1]
+        space()
+        display_task_details(chosen_task)
+        space()
+        return chosen_task
+    except Exception as error:
+        space()
+        print("AN ERROR HAS OCCURRED: ", error)
+        space()
+        return False
+        
+#When viewing all tasks. Only show name and Task Code
+def display_task(task, index):
+    print(f"TASK CODE: {index}\n"
+          f"TASK NAME: {task.name}\n")
+    
+#When viewing all schedules. Only show name and Schedule Code
+def display_schedule(schedule, index):
+    print(f"SCHEDULE CODE: {index}\n"
+          f"SCHEDULE NAME: {schedule.name}")
+    
+#When viewing detailed tasks...
+def display_task_details(task):
+    print(f"TASK NAME: {task.name}\n"
+          f"TASK DATE: {task.date}\n"
+          f"TASK TIME: {task.time}\n"
+          f"TASK DURATION: {task.duration}\n"
+          f"TASK DESCRIPTION: {task.description}")
 
 def space():
     print("")
