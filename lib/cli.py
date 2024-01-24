@@ -15,16 +15,12 @@ from helpers import (
     update_task_from_schedule,
     display_all_tasks_in_db,
     task_search_by_start_and_end_time_in_db,
-    task_search_by_id,
-    schedule_search_by_id,
-    border,
     space,
     long_border,
     find_schedule_w_index,
-    display_task,
-    display_task_details,
     find_task_w_index,
-    find_task_in_schedule_w_index
+    find_task_in_schedule_w_index,
+    create_schedule_task_table
 )
 
 
@@ -33,6 +29,7 @@ from helpers import (
 
 def main():
     while True:
+        create_schedule_task_table()
         welcome_screen()
 
 def welcome_screen():

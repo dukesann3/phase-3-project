@@ -3,7 +3,7 @@ from model.Task import Task
 import ipdb
 
 
-def testing_create_table():
+def create_init_table():
     Schedule.create_table()
     Task.create_table()
 
@@ -16,8 +16,24 @@ def testing_create_table():
     Task.create("CookingClass@12pm", "04/03/2025", "12:00pm", 1, "Cooking orientation at 12pm", cooking_schedule.id)
     Task.create("CookingEggs@4am", "05/02/2025", "04:00am", 3, "Cooking eggs at 4am", cooking_schedule.id)
 
-def debugger():
-    ipdb.set_trace()
-#testing_create_table()
+def drop_tables():
+    Task.drop_table()
+    Schedule.drop_table()
 
-testing_create_table()
+def drop_task_table():
+    Task.drop_table()
+
+def drop_schedule_table():
+    Schedule.drop_table()
+
+def debugger():
+    print(f"create_init_table(): Creates arbiturary tables for task and schedule"
+          f"drop_tables(): Drops both schedule and task tables"
+          f"drop_task_table(): Drops only task table"
+          f"drop_schedule_table(): Drops only schedule table")
+    ipdb.set_trace()
+
+debugger()
+
+
+

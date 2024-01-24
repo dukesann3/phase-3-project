@@ -431,14 +431,7 @@ class Task:
 
         return task_bucket 
     
-    @classmethod
-    def parameter_checker(cls, name, date, time, duration, description):
-        #returns boolean
-        cls.time_corrector(time)
-        cls.date_corrector(date)
-        #cls.name_checker(name)
-        cls.duration_checker(duration)
-        cls.description_checker(description)
+
 
 
 

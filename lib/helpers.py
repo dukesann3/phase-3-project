@@ -2,6 +2,7 @@ from model.Schedule import Schedule
 from model.Task import Task
 import sys, os
 
+
 def exit_program():
     print("Good bye!")
     sys.exit()
@@ -9,6 +10,10 @@ def exit_program():
 def populate_all_dict():
     Schedule.no_return_get_all()
     Task.no_return_get_all()
+
+def create_schedule_task_table():
+    Schedule.create_table()
+    Task.create_table()
 
 def display_all_schedules():
     all_schedule = Schedule.get_all()
@@ -243,7 +248,6 @@ def update_task_from_schedule(task):
         space()
         print(f"An error occurred: {error}")
         space()
-
 
 
 def display_all_tasks_in_db():
