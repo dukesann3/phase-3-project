@@ -116,22 +116,6 @@ def task_search_by_name(name):
         print("FOUND 0 RESULTS")
         space()
 
-def task_search_by_id(id):
-    try:
-        found_task = Task.find_by_id(id)
-        print(found_task, id)
-        print("1 RESULT FOUND ")
-        space()
-        print(f"FOUND TASK WITH TASK CODE: {found_task.id}")
-        space()
-        return found_task
-    except Exception as error:
-        space()
-        print("AN ERROR HAS OCCURRED: ", error)
-        print("FOUND 0 RESULTS")
-        space()
-
-
 def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
     try:
         found_tasks = Task.find_by_start_and_end_time_ind(start_time, end_time, schedule_id)

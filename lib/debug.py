@@ -16,7 +16,7 @@ def debugger():
     print(f"\n"
           f"*************Debugger Commands********************************************\n"
           f"\n"
-          f"reset_database():----------------Drops both schedule and task tables\n"
+          f"reset_database(): Drops both schedule and task tables\n"
           f"\n"
           f"**************************************************************************\n")
     ipdb.set_trace()
