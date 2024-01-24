@@ -11,6 +11,12 @@ Each task will belong to a schedule with a one to one relationship. Meaning, a t
 
 ## Usage
 
+To avoid package interferences, 
+Please type in the command line before proceeding...
+```bash
+pipenv shell
+```
+
 To seed the database before proceeding,
 Please type in the command line...
 ```bash
