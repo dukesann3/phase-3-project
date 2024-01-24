@@ -18,5 +18,8 @@ def reset_database():
     Task.drop_table()
     Schedule.drop_table()
 
-reset_database()
-create_init_table()
+def seed():
+    reset_database()
+    create_init_table()
+
+seed()
