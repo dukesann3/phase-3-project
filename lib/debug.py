@@ -20,38 +20,9 @@ def create_tables():
     Schedule.create_table()
     Task.create_table()
 
-def drop_tables():
+def reset_database():
     Task.drop_table()
     Schedule.drop_table()
-
-def drop_task_table():
-    Task.drop_table()
-
-def drop_schedule_table():
-    Schedule.drop_table()
-
-def create_schedule(name):
-    try:
-        Schedule.create(name)
-    except Exception as error:
-        print("AN ERROR HAS OCCURRED: ", error)
-
-def create_task(name, date, time, duration, description, schedule_id):
-    try:
-        Task.create(name, date, time, float(duration), description, int(schedule_id))
-    except Exception as error:
-        print("AN ERROR HAS OCCURRED: ",error)
-
-def show_all_schedules():
-    all_schedule = Schedule.get_all()
-    for schedule in all_schedule:
-        print(schedule)
-
-def show_all_tasks():
-    all_task = Task.get_all()
-    for task in all_task:
-        print(task)
-
 
 def debugger():
     create_tables()
@@ -59,13 +30,7 @@ def debugger():
           f"*************Debugger Commands********************************************\n"
           f"\n"
           f"create_init_table():-------------Creates arbiturary tables for task and schedule\n"
-          f"drop_tables():-------------------Drops both schedule and task tables\n"
-          f"drop_task_table():---------------Drops only task table\n"
-          f"drop_schedule_table():-----------Drops only schedule table\n"
-          f"show_all_schedules():------------Displays all schedules in database\n"
-          f"show_all_tasks():----------------Displays all tasks in database\n"
-          f"create_schedule(name):-----------Creates new schedule\n"
-          f"create_task(name, date, time, duration, description, schedule_id):-----------Creates new task\n"
+          f"reset_database():----------------Drops both schedule and task tables\n"
           f"\n"
           f"**************************************************************************\n")
     ipdb.set_trace()
