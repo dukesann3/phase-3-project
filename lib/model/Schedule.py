@@ -21,7 +21,7 @@ class Schedule:
         self.name = name
     
     def __repr__(self):
-        return (f"Schedule Code: {self.id}\n"
+        return (f"Schedule Id:   {self.id}\n"
                 f"Schedule Name: {self.name}")
 
     

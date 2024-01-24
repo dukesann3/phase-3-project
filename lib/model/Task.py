@@ -48,7 +48,7 @@ class Task:
         self.schedule_id = schedule_id
     
     def __repr__(self):
-        return (f"\nTask Code: {self.id}\n"
+        return (f"\nTASK ID: {self.id}\n"
                 f"TASK NAME: {self.name}\n"
                 f"TASK DATE: {self.date}\n"
                 f"TASK START TIME: {self.time}\n"
