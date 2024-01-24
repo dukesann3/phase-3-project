@@ -121,7 +121,7 @@ class Task:
 
             self._date = date
         else:
-            raise ValueError("Date must be a string and be in MM/DD/YYYY format")
+            raise ValueError("Date must be between 2000-2099 and a string in MM/DD/YYYY format")
     
     @classmethod
     def date_corrector(cls, date):
@@ -139,7 +139,7 @@ class Task:
 
             return date
         else:
-            raise ValueError("Date must be a string and be in MM/DD/YYYY format")
+            raise ValueError("Date must be between 2000-2099 and a string in MM/DD/YYYY format")
     
     @property
     def time(self):

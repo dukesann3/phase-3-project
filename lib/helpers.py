@@ -138,7 +138,7 @@ def add_new_task_to_schedule(selected_schedule):
     from model.Task import Task
     #schedule id should come from task.schedule_id
     task_name = input("Enter Task Name: ")
-    task_date = input("Enter Task Date (MM/DD/YYYY format): ")
+    task_date = input("Enter Task Date (MM/DD/YYYY format) and YYYY must be in between 2000-2099: ")
     task_time = input("Enter Task Start Time (##:##am/pm format): ")
     task_duration = input("Enter Task Duration (in hours): ")
     task_description = input("Enter Task Description: ")
@@ -252,6 +252,11 @@ def task_search_by_start_and_end_time_in_db(start_time, end_time):
 def find_schedule_w_index(index):
     #index is incremented by one.  Make sure to subtract it by one
     try:
+        if not index.isdigit():
+            raise TypeError("Value must be a number")
+        elif int(index) > len(Schedule.get_all()) or int(index) <= 0:
+            raise ValueError("Entered schedule code does not exist in database")
+        
         index = int(index)
         all_schedule = Schedule.get_all()
         chosen_schedule = all_schedule[index-1]
@@ -260,7 +265,7 @@ def find_schedule_w_index(index):
         space()
         return chosen_schedule
     except Exception as error:
-        print("AN ERROR HAS OCCURRED: ", error)
+        print("\nAN ERROR HAS OCCURRED: ", error)
         space()
         return False
     
@@ -268,6 +273,11 @@ def find_schedule_w_index(index):
 def find_task_w_index(index):
     #index is incremented by one.  Make sure to subtract it by one
     try:
+        if not index.isdigit():
+            raise TypeError("Value must be a number")
+        elif int(index) > len(Task.get_all()) or int(index) <= 0:
+            raise ValueError("Entered task code does not exist in database")
+        
         index = int(index)
         all_tasks = Task.get_all()
 
@@ -284,6 +294,11 @@ def find_task_w_index(index):
     
 def find_task_in_schedule_w_index(schedule, index):
     try:
+        if not index.isdigit():
+            raise TypeError("Value must be a number")
+        elif int(index) > len(schedule.tasks()) or int(index) <= 0:
+            raise ValueError("Entered task code does not exist in database")
+
         index = int(index)
         all_tasks = schedule.tasks()
 
