@@ -92,18 +92,6 @@ def schedule_search_by_name(name):
         print("AN ERROR HAS OCCURRED: ", error)
         space()
 
-def schedule_search_by_id(id):
-    try:
-        found_schedule = Schedule.find_by_id(id)
-        print("1 RESULT FOUND ")
-        space()
-        print(f"FOUND SCHEDULE WITH SCHEDULE CODE: {found_schedule.id}")
-        space()
-        return found_schedule 
-    except Exception as error:
-        space()
-        print("AN ERROR HAS OCCURRED: ", error)
-        space()
 
 def display_all_tasks_in_schedule(schedule):
     print(schedule)
@@ -151,7 +139,9 @@ def task_search_by_start_and_end_time(start_time, end_time, schedule_id):
         space()
         border()
         for task in found_tasks:
-            print(task)
+            space()
+            display_task_details(task)
+            space()
         border()
         return found_tasks
     except Exception as error:
@@ -264,12 +254,14 @@ def task_search_by_start_and_end_time_in_db(start_time, end_time):
         space()
         border()
         for task in found_tasks:
-            print(task)
+            space()
+            display_task_details(task)
+            space()
         border()
         return found_tasks
-    except:
+    except Exception as error:
         space()
-        print("FOUND 0 RESULTS")
+        print("AN ERROR HAS OCCURRED: ", error)
         space()
 
 #Finds schedule in index

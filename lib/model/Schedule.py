@@ -24,7 +24,6 @@ class Schedule:
         return (f"Schedule Id:   {self.id}\n"
                 f"Schedule Name: {self.name}")
 
-    
     @property
     def name(self):
         return self._name
@@ -40,7 +39,7 @@ class Schedule:
     def create_table(cls):
         """Creates a new table here"""
         sql = """
-            CREATE TABLE IF NOT EXISTS Schedule(
+            CREATE TABLE IF NOT EXISTS schedule(
                 id INTEGER PRIMARY KEY,
                 name TEXT
             );
@@ -52,15 +51,15 @@ class Schedule:
     def drop_table(cls):
         """Deletes table here"""
         sql = """
-            DROP TABLE IF EXISTS Schedule;
+            DROP TABLE IF EXISTS schedule;
         """
         CURSOR.execute(sql)
         CONN.commit()
 
     def save(self):
-        """Creates new row for Schedule table"""
+        """Creates new row for schedule table"""
         sql = """
-            INSERT INTO Schedule (name)
+            INSERT INTO schedule (name)
             VALUES (?);
         """
         CURSOR.execute(sql, (self.name,))
@@ -95,7 +94,7 @@ class Schedule:
     @classmethod
     def get_all(cls):
         sql = """
-            SELECT * FROM Schedule;
+            SELECT * FROM schedule;
         """
         all_schedules = CURSOR.execute(sql).fetchall()
 
@@ -106,7 +105,7 @@ class Schedule:
     @classmethod
     def no_return_get_all(cls):
         sql = """
-            SELECT * FROM Schedule;
+            SELECT * FROM schedule;
         """
         all_schedules = CURSOR.execute(sql).fetchall()
         for schedule in all_schedules:
@@ -121,14 +120,14 @@ class Schedule:
                 raise ValueError(f"This name: {name} has already been used. Cannot have duplicate")
     
         sql = """
-            UPDATE Schedule 
+            UPDATE schedule 
             SET name = ?
             WHERE id = ?
         """
         CURSOR.execute(sql, (name, self.id))
         CONN.commit()
         sql_fetch = """
-            SELECT * FROM Schedule
+            SELECT * FROM schedule
             WHERE id = ?
         """
         updated_task = CURSOR.execute(sql_fetch, (self.id, )).fetchone()
@@ -136,29 +135,17 @@ class Schedule:
 
     def delete(self):
         sql = """
-            DELETE FROM Schedule
+            DELETE FROM schedule
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
         del type(self).all[self.id]
-
-    @classmethod
-    def find_by_id(cls, id):
-        sql = """
-            SELECT * FROM Schedule
-            WHERE id = ?
-        """
-        retrieved_schedule = CURSOR.execute(sql, (id,)).fetchone()
-        if retrieved_schedule:
-            return cls.instance_from_db(retrieved_schedule) if retrieved_schedule else None
-        else:
-            raise ValueError(f"Could Not Find Schedule Code: {id}")
     
     @classmethod
     def find_by_name(cls, name):
         sql = """
-            SELECT * FROM Schedule
+            SELECT * FROM schedule
             WHERE name = ?
         """
         retrieved_schedule = CURSOR.execute(sql, (name,)).fetchone()
@@ -171,7 +158,7 @@ class Schedule:
     def tasks(self):
         from model.Task import Task
         sql = """
-            SELECT * FROM Task
+            SELECT * FROM task
             WHERE schedule_id = ?
         """
         retrieved_tasks = CURSOR.execute(sql, (self.id,)).fetchall()

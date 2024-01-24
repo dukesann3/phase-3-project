@@ -94,6 +94,7 @@ class Task:
         else:
             raise TypeError("Name must be a string longer than 0 characters")
     
+    #used in update (helpers)
     @classmethod
     def name_checker(cls, name):
         for key in cls.all:
@@ -190,11 +191,6 @@ class Task:
         else:
             raise TypeError("Duration must be an integer or float in terms of hours")
         
-    @classmethod
-    def duration_checker(cls, duration):
-        if not isinstance(duration, (int, float)):
-            raise TypeError("Duration must be an integer or float in terms of hours")
-        
     @property
     def description(self):
         return self._description
@@ -204,11 +200,6 @@ class Task:
         if isinstance(description, str):
             self._description = description
         else:
-            raise TypeError("Description must be a string")
-        
-    @classmethod
-    def description_checker(cls, description):
-        if not isinstance(description, str):
             raise TypeError("Description must be a string")
     
     @property
@@ -226,7 +217,7 @@ class Task:
     def create_table(cls):
         """Creates new table here"""
         sql = """
-            CREATE TABLE IF NOT EXISTS Task(
+            CREATE TABLE IF NOT EXISTS task(
                 id INTEGER PRIMARY KEY,
                 name TEXT,
                 date TEXT,
@@ -234,7 +225,7 @@ class Task:
                 duration INTEGER,
                 description TEXT,
                 schedule_id INTEGER,
-                FOREIGN KEY (schedule_id) REFERENCES Schedule(id)
+                FOREIGN KEY (schedule_id) REFERENCES schedule(id)
             );
         """
         CURSOR.execute(sql)
@@ -244,16 +235,16 @@ class Task:
     def drop_table(cls):
         """Drops table here"""
         sql = """
-            DROP TABLE IF EXISTS Task;
+            DROP TABLE IF EXISTS task;
         """
         CURSOR.execute(sql)
         CONN.commit()
 
     # It is self instead of class because this is each row is specific to each instance
     def save(self):
-        """add new rows into Task table"""
+        """add new rows into task table"""
         sql = """
-            INSERT INTO Task (name, date, time, duration, description, schedule_id)
+            INSERT INTO task (name, date, time, duration, description, schedule_id)
             VALUES (?, ?, ?, ?, ?, ?);
         """
         CURSOR.execute(sql, (self.name, self.date, self.time, self.duration, self.description, self.schedule_id))
@@ -292,7 +283,7 @@ class Task:
     @classmethod
     def get_all(cls):
         sql = """
-            SELECT * FROM Task;
+            SELECT * FROM task;
         """
 
         all_tasks = CURSOR.execute(sql).fetchall()
@@ -302,7 +293,7 @@ class Task:
     @classmethod
     def no_return_get_all(cls):
         sql = """
-            SELECT * FROM Task;
+            SELECT * FROM task;
         """
 
         all_tasks = CURSOR.execute(sql).fetchall()
@@ -311,20 +302,15 @@ class Task:
 
     
     def update(self, name, date, time, duration, description):
-        #should compare variables first then update the thing right? Pretty stupid if I didn't??????
-        #type(self).parameter_checker(name, date, time, duration, description)
-        #need to know which value is 
-        #type(self).start_end_time_comparator(name, date, time, duration, self.schedule_id)
-
         sql = """
-            UPDATE Task 
+            UPDATE task 
             SET name = ?, date = ?, time = ?, duration = ?, description = ?, schedule_id = ?
             WHERE id = ?
         """
         CURSOR.execute(sql, (name, date, time, duration, description, self.schedule_id, self.id))
         CONN.commit()
         sql_fetch = """
-            SELECT * FROM Task
+            SELECT * FROM task
             WHERE id = ? AND schedule_id = ?
         """
         updated_task = CURSOR.execute(sql_fetch, (self.id, self.schedule_id)).fetchone()
@@ -333,29 +319,17 @@ class Task:
 
     def delete(self):
         sql = """
-            DELETE FROM Task
+            DELETE FROM task
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
         del type(self).all[self.id]
-
-    @classmethod
-    def find_by_id(cls, id):
-        sql = """
-            SELECT * FROM Task
-            WHERE id = ?
-        """
-        retrieved_task = CURSOR.execute(sql, (id,)).fetchone()
-        if retrieved_task:
-            return cls.instance_from_db(retrieved_task) if retrieved_task else None
-        else:
-            raise ValueError(f"Could not Find Task Code: {id}")
     
     @classmethod
     def find_by_name(cls, name):
         sql = """
-            SELECT * FROM Task
+            SELECT * FROM task
             WHERE name = ?
         """
         retrieved_task = CURSOR.execute(sql, (name,)).fetchone()
@@ -364,29 +338,14 @@ class Task:
         else:
             raise ValueError(f"Could not Find Task Name {name}")
 
-    @classmethod
-    def find_by_date(cls, date):
-        sql = """
-            SELECT * FROM Task
-            WHERE date = ?
-        """
-        retrieved_tasks = CURSOR.execute(sql, (date,)).fetchall()
-        return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
-
-    @classmethod
-    def find_by_time(cls, time):
-        sql = """
-            SELECT * FROM Task
-            WHERE time = ?
-        """
-        retrieved_tasks = CURSOR.execute(sql, (time,)).fetchall()
-        return [cls.instance_from_db(task) for task in retrieved_tasks if retrieved_tasks]
     
     @classmethod
     def find_by_start_and_end_time_ind(cls, start_time, end_time, schedule_id):
 
         task_bucket = []
-
+        start_time = cls.date_corrector(start_time)
+        end_time = cls.date_corrector(end_time)
+        
         start = start_time_to_int(start_time, "12:00am")
         end = start_time_to_int(end_time, "12:00am")
 
@@ -407,8 +366,10 @@ class Task:
 
     @classmethod
     def find_by_start_and_end_time(cls, start_time, end_time):
-
         task_bucket = []
+
+        start_time = cls.date_corrector(start_time)
+        end_time = cls.date_corrector(end_time)
 
         start = start_time_to_int(start_time, "12:00am")
         end = start_time_to_int(end_time, "12:00am")
