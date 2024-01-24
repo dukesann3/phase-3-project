@@ -11,13 +11,18 @@ Each task will belong to a schedule with a one to one relationship. Meaning, a t
 
 ## Usage
 
-There is one thing the client/user has to do to start using this product.
+To seed the database before proceeding,
+Please type in the command line...
+```bash
+python lib/seed.py
+```
+This command deletes the previous databases and populates it again with arbitrary data for both schedule and task database.
 
+To debug the code,
 Please type in the command line...
 ```bash
 python lib/debug.py
 ```
-This command populates the schedule and task database.
 
 To run the Task-Schedule CLI, type in command line...
 ```bash
